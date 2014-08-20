@@ -185,6 +185,12 @@ group :development do
   gem 'librarian', '>= 0.0.25', require: false
   gem 'annotate'
   gem 'foreman', require: false
+
+  gem 'capistrano'                                        # For deployment
+  gem 'capistrano-ext', require: false                    # For some handy capistrano extensions
+  gem 'capistrano-unicorn', require: false                # For unicorn support in capistrano
+  gem 'capistrano-sidekiq', '= 0.3.4', require: false     # For sidekiq support in capistrano, see https://github.com/seuros/capistrano-sidekiq/issues/31
+  
 end
 
 # this is an optional gem, it provides a high performance replacement
