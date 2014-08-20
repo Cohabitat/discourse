@@ -1,6 +1,11 @@
+<%
+YAML.load(File.read(File.join(ENV["HOME"], ".env.yml"))).each{ |k,v| ENV[k] = v } if File.exist?(File.join(ENV["HOME"], ".env.yml"))
+YAML.load(File.read(File.join(ENV["HOME"], ".env.local.yml"))).each{ |k,v| ENV[k] = v } if File.exist?(File.join(ENV["HOME"], ".env.local.yml"))
+%>
+
 defaults: &defaults
-  host: <%= ENV["RAILS_REDIS_ADDRESS"].split(":", 2).first %>
-  port: <%= ENV["RAILS_REDIS_ADDRESS"].split(":", 2).last %>
+  host: <%= ENV["RAILS_REDIS_ADDRESS"].split(':',2).first %>
+  port: <%= ENV["RAILS_REDIS_ADDRESS"].split(':',2).last %>
   password: <%= GlobalSetting.redis_password %>
   db: <%= GlobalSetting.redis_db %>
 
