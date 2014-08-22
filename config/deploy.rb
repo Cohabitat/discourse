@@ -10,7 +10,7 @@ set :assets_role, [ :app ]
 load 'deploy/assets'
 
 ##### Stages #####
-set :stages, %w(production)
+set :stages, %w(staging production)
 set :rails_env, defer{ stage }
 
 ##### Constant variables #####
