@@ -24,14 +24,14 @@ required:
     default: ''
     type: email
   notification_email:
-    default: 'info@unconfigured.discourse.org'
+    default: 'noreply@cohabitat.net'
     type: email
   site_contact_username:
     default: ''
     type: username
   logo_url:
     client: true
-    default: '/images/d-logo-sketch.png'
+    default: '/public/logo-dev.png'
   logo_small_url:
     client: true
     default: '/images/d-logo-sketch-small.png'
