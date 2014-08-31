@@ -178,7 +178,6 @@ uk:
     user:
       said: "{{username}} сказав(ла):"
       profile: "Профіль"
-      show_profile: "Переглянути профіль"
       mute: "Mute"
       edit: "Редагувати налаштування"
       download_archive: "звантажити архів з моїми дописами"
@@ -250,14 +249,12 @@ uk:
         title: "Фон Профіля"
       email:
         title: "Електронна пошта"
-        instructions: "Ваша пошта не відображається публічно."
         ok: "Адресу прийнято. Ми надішлемо Вам листа для підтвердження."
         invalid: "Будь ласка, введіть правильну адресу електронної пошти."
         authenticated: "Вашу скриньку було автентифіковано {{provider}}."
         frequency: "Ми будемо надсилати Вам листи тільки якщо ми Вас останнім часом не бачили і Ви ще не бачили те, про що ми Вам пишемо."
       name:
         title: "Ім'я"
-        instructions: "Повна версія вашого ім'я."
         too_short: "Ваше ім'я надто коротке."
         ok: "Ваше ім'я виглядає добре."
       username:
@@ -347,11 +344,9 @@ uk:
     errors:
       reasons:
         network: "Помилка Мережі"
-        server: "Помилка Серверу: {{code}}"
         unknown: "Помилка"
       desc:
         network: "Будь ласка, перевірте з'єднання."
-        server: "Щось пішло не так."
         unknown: "Щось пішло не так."
       buttons:
         back: "Повернутися"
@@ -448,6 +443,7 @@ uk:
         title_too_short: "Заголовок має бути мінімум {{min}} символів"
         title_too_long: "Заголовок не може бути менше, ніж {{max}} символів"
         post_missing: "Допис не може бути порожнім"
+        post_length: "Найменший розмір допису має бути {{min}} символів"
         category_missing: "Ви повинні обрати категорію"
       save_edit: "Зберегти зміни"
       reply_original: "Відповісти в початковій темі"
@@ -495,12 +491,16 @@ uk:
       admin_options_title: "Необов'язкові налаштування персоналу для цієї теми"
       auto_close_label: "Час автоматичного закриття теми:"
       auto_close_units: "(к-ть годин, час, або дата)"
+      auto_close_examples: 'введіть повний час або кількість годин — 24, 17:00, 2013-11-22 14:00'
       auto_close_error: "Будь ласка, введіть коректне значення."
     notifications:
       title: "Сповіщення про згадку Вашого @імені, відповіді на Ваші дописи та теми, приватні повідомлення, тощо"
       none: "Наразі Ви не маєте сповіщень."
       more: "переглянути старіші сповіщення"
       total_flagged: "всього дописів, на які поскаржилися"
+      mentioned: "<i title='згадав' class='icon'>@</i><p><span>{{username}}</span> {{description}}</p>"
+      quoted: "<i title='Цитування' class='fa fa-quote-right'></i><p><span>{{username}}</span> {{description}}</p>"
+      replied: "<i title='Відповідь від' class='fa fa-reply'></i><p><span>{{username}}</span> {{description}}</p>"
     upload_selector:
       title: "Додати зображення"
       title_with_attachments: "Додати зображення або файл"
@@ -584,7 +584,6 @@ uk:
       browse_all_categories: Переглянути всі категорії
       view_latest_topics: перегляньте останні теми
       suggest_create_topic: Чому б не створити тему?
-      read_position_reset: "Дані про прочитану Вами позицію було скинуто."
       jump_reply_up: перейти до ранішої відповіді
       jump_reply_down: перейти до пізнішої відповіді
       deleted: "Тему було видалено"
@@ -610,6 +609,7 @@ uk:
           '2': 'Ви будете отримувати сповіщення, бо Ви <a href="/users/{{username}}/preferences">читаєте цю тему</a>.'
           '1_2': 'Ви будете отримувати сповіщення лише якщо хтось згадуватиме Ваше @Ім''я або відповідатиме на Ваш допис.'
           '1': 'Ви будете отримувати сповіщення лише якщо хтось згадуватиме Ваше @Ім''я або відповідатиме на Ваш допис.'
+          '0_7': 'Ви ігноруєте всі сповіщення у цій категорії.'
           '0_2': 'Ви ігноруєте всі сповіщення з цієї теми.'
           '0': 'Ви ігноруєте всі сповіщення з цієї теми.'
         watching_pm:
@@ -741,8 +741,6 @@ uk:
         confirm: "Ви впевнені, що хочете облишити цей допис?"
         no_value: "Ні, зачекайте"
         yes_value: "Так, облишити"
-      wiki:
-        about: "цей допис як wiki; будь-хто може редагувати його"
       archetypes:
         save: 'Зберегти налаштування'
       controls:
@@ -835,7 +833,6 @@ uk:
       save: 'Зберегти категорію'
       creation_error: Під час створення категорії трапилася помилка.
       save_error: Під час збереження категорії трапилася помилка.
-      more_posts: "переглянути всі {{posts}}..."
       name: "Назва категорії"
       description: "Опис"
       topic: "тема категорії"
@@ -958,7 +955,6 @@ uk:
         help: "Останні теми в категорії {{categoryName}}"
       top:
         title: "Top"
-        help: "a selection of best topics in the last year, month, week or day"
         yearly:
           title: "Top Yearly"
         monthly:
@@ -1037,7 +1033,6 @@ uk:
         disagree_flag: "Відмовитися"
         clear_topic_flags: "Done"
         clear_topic_flags_title: "The topic has been investigated and issues have been resolved. Click Done to remove the flags."
-        more: "(ще...)"
         flagged_by: "Позначено"
         resolved_by: "Вирішено за допомогою"
         system: "System"
@@ -1112,7 +1107,6 @@ uk:
           backup:
             text: "Backup"
             title: "Create a backup"
-            confirm: "Are you sure you want to start a new backup?"
           download:
             text: "Download"
             title: "Download the backup"
@@ -1332,7 +1326,6 @@ uk:
         reputation: Репутація
         permissions: Дозволи
         activity: Активність
-        like_count: Вподобань отримано
         private_topics_count: Приватних тем
         posts_read_count: Дописів прочитано
         post_count: Дописів створено
@@ -1372,6 +1365,10 @@ uk:
           visits: "Відвідини"
           days: "днів"
           topics_replied_to: "Теми, на які відповів(ла)"
+          topics_viewed: "Переглянуто Тем"
+          topics_viewed_all_time: "Переглянуто Тем (за весь час)"
+          posts_read: "Прочитано Дописів"
+          posts_read_all_time: "Прочитано дописів (весь час)"
           flagged_posts: "Оскаржені дописи"
       site_content:
         none: "Виберіть тип вмісту, щоб почати його редагувати."
@@ -1423,6 +1420,7 @@ uk:
     keyboard_shortcuts_help:
       jump_to:
         title: 'Перейти до'
+        categories: '<b>g</b>,  <b>c</b> Категорії'
       navigation:
         title: 'Навігація'
         back: '<b>u</b> Назад'
@@ -1438,6 +1436,8 @@ uk:
       actions:
         title: 'Дії'
         star: '<b>f</b> Позначити тему зірочкою'
+        share_post: '<b>s</b> Поширити допис'
+        reply_topic: '<b>shift r</b> Відповісти на тему'
         reply_post: '<b>r</b> Відповісти на допис'
         quote_post: '<b>q</b> Цитувати допис'
         like: '<b>l</b> Вподобати допис'
@@ -1445,6 +1445,8 @@ uk:
         bookmark: '<b>b</b> Лишити закладку в дописі'
         edit: '<b>e</b> Редагувати допис'
         delete: '<b>d</b> Видалити допис'
+        mark_muted: '<b>m</b>, <b>m</b> Ігнорувати сповіщення з теми'
+        mark_tracking: '<b>m</b>, <b>t</b> Стежити за темою'
     badges:
       title: Значок
       multiple_grant: "нагороджено багато разів?"

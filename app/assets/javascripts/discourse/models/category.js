@@ -29,6 +29,10 @@ Discourse.Category = Discourse.Model.extend({
     return Discourse.getURL("/category/") + Discourse.Category.slugFor(this);
   }.property('name'),
 
+  nameLower: function() {
+    return this.get('name').toLowerCase();
+  }.property('name'),
+
   unreadUrl: function() {
     return this.get('url') + '/l/unread';
   }.property('url'),
@@ -152,7 +156,7 @@ Discourse.Category = Discourse.Model.extend({
 
   topicCountStats: function() {
     return this.countStats('topics');
-  }.property('posts_year', 'posts_month', 'posts_week', 'posts_day'),
+  }.property('topics_year', 'topics_month', 'topics_week', 'topics_day'),
 
   setNotification: function(notification_level) {
     var url = "/category/" + this.get('id')+"/notifications";
@@ -184,6 +188,8 @@ Discourse.Category = Discourse.Model.extend({
   }.property('id')
 });
 
+var _uncategorized;
+
 Discourse.Category.reopenClass({
 
   NotificationLevel: {
@@ -191,6 +197,11 @@ Discourse.Category.reopenClass({
     TRACKING: 2,
     REGULAR: 1,
     MUTED: 0
+  },
+
+  findUncategorized: function() {
+    _uncategorized = _uncategorized || Discourse.Category.list().findBy('id', Discourse.Site.currentProp('uncategorized_category_id'));
+    return _uncategorized;
   },
 
   slugFor: function(category) {

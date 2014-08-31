@@ -9,7 +9,7 @@ require_relative '../lib/discourse_plugin_registry'
 # Global config
 require_relative '../app/models/global_setting'
 
-require 'pry-rails' if Rails.env == "development"
+require 'pry-rails' if Rails.env.development?
 
 if defined?(Bundler)
   Bundler.require(*Rails.groups(assets: %w(development test profile)))
@@ -91,7 +91,7 @@ module Discourse
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [
         :password,
-        :pop3s_polling_password,
+        :pop3_polling_password,
         :s3_secret_access_key,
         :twitter_consumer_secret,
         :facebook_app_secret,

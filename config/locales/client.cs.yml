@@ -231,7 +231,6 @@ cs:
     user:
       said: "uživatel {{username}} řekl:"
       profile: "Profil"
-      show_profile: "Zobrazit profil"
       mute: "Ignorovat"
       edit: "Upravit nastavení"
       download_archive: "stáhnout archiv mých příspěvků"
@@ -297,7 +296,6 @@ cs:
         title: "Pozadí profilu"
       email:
         title: "Emailová adresa"
-        instructions: "Vaše emailová adresa nikdy nebude veřejně zobrazena."
         ok: "To vypadá dobře. Zašleme vám email s potvrzením."
         invalid: "Prosím zadejte platnou emailovou adresu."
         authenticated: "Vaše emailová adresa byla autorizována přes službu {{provider}}."
@@ -635,7 +633,6 @@ cs:
       browse_all_categories: Projděte všechny kategorie
       view_latest_topics: si zobrazte populární témata
       suggest_create_topic: Co takhle založit nové téma?
-      read_position_reset: "Vaše pozice čtení byla zresetována."
       jump_reply_up: přejít na předchozí odpověď
       jump_reply_down: přejít na následující odpověď
       deleted: "Téma bylo smazáno"
@@ -971,7 +968,6 @@ cs:
       save: 'Uložit kategorii'
       creation_error: Během vytváření nové kategorie nastala chyba.
       save_error: Během ukládání kategorie nastala chyba.
-      more_posts: "zobrazit všechny {{posts}}..."
       name: "Název kategorie"
       description: "Popis"
       topic: "téma kategorie"
@@ -1103,7 +1099,6 @@ cs:
         help: "populární témata v kategorii {{categoryName}}"
       top:
         title: "Nejlepší"
-        help: "výběr nejlepších témat za rok, měsíc, týden nebo den"
         yearly:
           title: "Nejlepší podle let"
         monthly:
@@ -1258,7 +1253,6 @@ cs:
           backup:
             text: "Zálohovat"
             title: "Vytvořit zálohu"
-            confirm: "Are you sure you want to start a new backup?"
           download:
             text: "Stáhnout"
             title: "Stáhnout zálohu"
@@ -1475,7 +1469,6 @@ cs:
         reputation: Reputace
         permissions: Oprávnění
         activity: Aktivita
-        like_count: Obdržených 'líbí se'
         private_topics_count: Počet soukromách témat
         posts_read_count: Přečteno příspěvků
         post_count: Vytvořeno příspěvků

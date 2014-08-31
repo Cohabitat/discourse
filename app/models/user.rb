@@ -173,7 +173,6 @@ class User < ActiveRecord::Base
   end
 
   def change_username(new_username)
-    current_username = self.username
     self.username = new_username
     save
   end
@@ -374,6 +373,10 @@ class User < ActiveRecord::Base
   # They might need to be denormalized
   def like_count
     UserAction.where(user_id: id, action_type: UserAction::WAS_LIKED).count
+  end
+
+  def like_given_count
+    UserAction.where(user_id: id, action_type: UserAction::LIKE).count
   end
 
   def post_count
@@ -728,11 +731,16 @@ class User < ActiveRecord::Base
                      .joins('INNER JOIN user_stats AS us ON us.user_id = users.id')
                      .where("created_at < ?", SiteSetting.purge_inactive_users_grace_period_days.days.ago)
                      .where('us.post_count = 0')
+                     .where('NOT admin AND NOT moderator')
                      .limit(100)
 
     destroyer = UserDestroyer.new(Discourse.system_user)
     to_destroy.each do |u|
-      destroyer.destroy(u)
+      begin
+        destroyer.destroy(u, context: I18n.t(:purge_reason))
+      rescue Discourse::InvalidAccess
+        # if for some reason the user can't be deleted, continue on to the next one
+      end
     end
   end
 
@@ -757,15 +765,15 @@ end
 #
 #  id                            :integer          not null, primary key
 #  username                      :string(60)       not null
-#  created_at                    :datetime
-#  updated_at                    :datetime
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #  name                          :string(255)
 #  seen_notification_id          :integer          default(0), not null
 #  last_posted_at                :datetime
 #  email                         :string(256)      not null
 #  password_hash                 :string(64)
 #  salt                          :string(32)
-#  active                        :boolean
+#  active                        :boolean          default(FALSE), not null
 #  username_lower                :string(60)       not null
 #  auth_token                    :string(32)
 #  last_seen_at                  :datetime
@@ -797,8 +805,8 @@ end
 #  uploaded_avatar_id            :integer
 #  email_always                  :boolean          default(FALSE), not null
 #  mailing_list_mode             :boolean          default(FALSE), not null
-#  locale                        :string(10)
 #  primary_group_id              :integer
+#  locale                        :string(10)
 #  registration_ip_address       :inet
 #  last_redirected_to_top_at     :datetime
 #  disable_jump_reply            :boolean          default(FALSE), not null

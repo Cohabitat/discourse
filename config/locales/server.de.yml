@@ -7,9 +7,9 @@
 
 de:
   dates:
-    short_date_no_year: "D. MMM"
-    short_date: "D. MMM YYYY"
-    long_date: "D. MMMM YYYY, H:mm"
+    short_date_no_year: "DD. MMM"
+    short_date: "DD. MMM YYYY"
+    long_date: "DD. MMMM YYYY, H:mm"
   time:
     formats:
       short: "%d. %m. %Y"
@@ -251,6 +251,7 @@ de:
       title: "Ältester"
     change_failed_explanation: "Du wolltest %{user_name} auf '%{new_trust_level}' zurückstufen. Jedoch ist seine Vertrauensstufe bereits '%{current_trust_level}'. %{user_name} verbleibt auf '%{current_trust_level}'"
   rate_limiter:
+    slow_down: "Du hast diese Aktion zu oft durchgeführt. Versuch es später wieder. "
     too_many_requests: "Diese Aktion kann nur ein begrenztes Mal pro Tag durchgeführt werden. Bitte warte %{time_left} bis zum nächsten Versuch."
     hours:
       one: "eine Stunde"
@@ -407,7 +408,7 @@ de:
       email_body: "%{link}\n\n%{message}"
   flagging:
     you_must_edit: '<p>Dein Beitrag wurde von der Community als Verstoß gemeldet. Bitte beachte <a href="/my/private-messages">deine privaten Nachrichten</a>.</p>'
-    user_must_edit: '<p>Gemeldete Inhalte wurden vorübergehend versteckt.</p>'
+    user_must_edit: '<p>Dieser Beitrag wurde von der Community gemeldet und ist vorübergehend ausgeblendet.</p>'
   archetypes:
     regular:
       title: "Normales Thema"
@@ -537,6 +538,9 @@ de:
     education_new_topic:
       title: "Hilfe: Erste Themen"
       description: "Die Hilfe wird automatisch überhalb des Editors eingeblendet, wenn neue Benutzer ihre ersten zwei Themen veröffentlichen."
+    usage_tips:
+      title: "Leitfaden für neue Benutzer"
+      description: "Leitfaden und wichtige Informationen für neue Benutzer"
     welcome_user:
       title: "Willkommen: Neuer Benutzer"
       description: "Eine private Nachricht welche automatisch an alle Benutzer gesendet wird welche sich anmelden."
@@ -669,6 +673,7 @@ de:
     allow_index_in_robots_txt: "Suchmaschinen mittels der robots.txt Datei erlauben, die Seite zu indizieren."
     email_domains_blacklist: "Eine Liste von E-Mail-Domains, die bei der Registrierung neuer Konten nicht erlaubt sind. Beispiel: mailinator.com trashmail.net"
     email_domains_whitelist: "Eine Liste von E-Mail-Domains, mit denen neue Konten registriert werden dürfen. ACHTUNG: Benutzer mit E-Mail-Adressen anderer Domains können sich dann nicht mehr registrieren!"
+    version_checks: "Kontaktiere den Discourse Hub zur Überprüfung auf neue Versionen und zeige Benachrichtigungen über neue Versionen auf der Administratorkonsole an."
     new_version_emails: "Sende eine E-Mail an contact_email Adresse wenn eine neue Version von Discourse verfügbar ist."
     port: "NUR FÜR ENTWICKLER! ACHTUNG! Benutze diesen HTTP-Port anstatt den Standardport 80. Diese Feld leer lassen heißt 'keinen'. Dient hauptsächlich Entwicklungszwecken."
     force_hostname: "NUR FÜR ENTWICKLER! ACHTUNG! Spezifiziere einen Hostnamen in der URL. Dieses Feld leer lassen heißt 'keinen'. Dient hauptsächlich Entwicklungszwecken."
@@ -705,7 +710,6 @@ de:
     allow_restore: "Wiederherstellung zulassen, welche ALLE vorhandenen Daten überschreiben kann! Auf 'false' lassen, sofern du nicht planst eine Sicherung wiederherzustellen."
     maximum_backups: "Maximale Anzahl Backups, die auf dem Server gespeichert werden. Ältere Backups werden automatisch gelöscht."
     backup_daily: "Erstelle jeden Tag automatisch ein Backup."
-    enable_s3_backups: "Lade fertige Backups zu S3 hoch. Stelle sicher, dass du deine S3 Kontodaten eingegeben hast. "
     s3_backup_bucket: "Der entfernte Speicherort für deine Backups. WARNUNG: Stelle sicher, dass es sich um einen privaten Speicherort handelt."
     active_user_rate_limit_secs: "Sekunden, nach denen das 'last_seen_at'-Feld aktualisiert wird."
     previous_visit_timeout_hours: "Stunden, die ein Besuch dauert bevor er als 'früherer' Besuch gezählt wird."
@@ -725,7 +729,9 @@ de:
     clean_up_uploads: "Lösche verwaiste Uploads, um illegales Hosting zu vermeiden. ACHTUNG: Du solltest ein Backup deines /uploads Verzeichnisses erstellen, bevor Du diese Funktion aktivierst."
     clean_orphan_uploads_grace_period_hours: "Frist (in Stunden) bevor ein verwaister Upload entfernt wird."
     purge_deleted_uploads_grace_period_days: "Frist (in Tagen) bevor ein entfernter Upload endgültig gelöscht wird."
+    purge_inactive_users_grace_period_days: "Schonfrist (in Tagen) bevor ein inaktiver Benutzer gelöscht wird."
     enable_s3_uploads: "Speichere hochgeladene Dateien auf Amazon S3."
+    s3_use_iam_profile: 'Benutze die AWS EC2 IAM Rolle zum Abrufen von Keys. ANMERKUNG: Das Aktivieren überschreibt die Einstellungen „s3 access key id“ und „s3 secret access key“.'
     s3_upload_bucket: "Der Amazon S3 Bucketname in den hochgeladene Dateien abgelegt werden. WARNUNG: Nur Kleinbuchstaben, keine Punkte."
     s3_access_key_id: "The Amazon S3 access key id that will be used to upload images"
     s3_secret_access_key: "Der geheime Schlüssel von Amazon S3 welcher für das Hochladen verwendet wird"
@@ -776,9 +782,6 @@ de:
     authorized_extensions: "Liste von erlaubten Dateiendungen für hochgeladene Dateien ('*' um alle Dateiendungen zu erlauben)"
     max_similar_results: "Anzahl ähnlicher Themen, die beim Erstellen eines neuen Themas über dem Editor angezeigt werden. Ähnlichkeit wird an Hand des Titels und Inhalts bestimmt."
     title_prettify: "Verhindert gängige Fehler im Titel, wie reine Grossschreibung, Kleinbuchstaben am Anfang, mehrere ! und ?, überflüssiger . am Ende, etc."
-    topic_views_heat_low: "Themen leicht hervorheben, die so oft gelesen wurden."
-    topic_views_heat_medium: "Themen moderat hervorheben, die so oft gelesen wurden."
-    topic_views_heat_high: "Themen stark hervorheben, die so oft gelesen wurden."
     faq_url: "URL zu einer externen FAQ welche Du gerne verwenden möchtest."
     tos_url: "Die vollständige URL zu Deinen extern gehosteten Nutzungsbedingungen, sofern vorhanden."
     privacy_policy_url: "Die vollständige URL zu Deinen extern gehosteten Datenschutzrichtlinien, sofern vorhanden."
@@ -805,13 +808,14 @@ de:
     delete_all_posts_max: "Die maximale Anzahl von Beiträgen welche auf einmal gelöscht werden kann. Hat ein Benutzer mehr Beiträge, so können die Beiträge nicht auf einmal und der Benutzer nicht gelöscht werden."
     username_change_period: "Die Anzahl der Tage, die neu registrierte Benutzer Zeit haben, um ihren Benutzernamen zu ändern (0 verbietet Änderungen)."
     email_editable: "Erlaube Benutzern ihre E-Mail-Adresse nach der Registrierung zu ändern."
+    logout_redirect: "Ziel für Weiterleitung nach einem Logout (z. B.: http://somesite.com/logout)"
     allow_uploaded_avatars: "Erlaube das Hochladen benutzerdefinierter Avatare."
     allow_animated_avatars: "Erlaube den Benutzern animierte GIFs als Avatar zu benutzen. ACHTUNG: Wenn Du diese Einstellung änderst, solltest Du den Rake-Task avatars:refresh ausführen."
     automatically_download_gravatars: "Avatare von Gravatar herunterladen, wenn ein Nutzer sich registriert oder seine E-Mail-Adresse ändert."
     digest_topics: "Maximale Anzahl von Themen, die in der E-Mail-Zusammenfassung angezeigt werden."
     digest_min_excerpt_length: "Minimale Länge des Auszugs aus einem Beitrag in der E-Mail-Zusammenfassung, in Zeichen."
     default_digest_email_frequency: "Wie oft man Zusammenfassungen per Mail standardmässig erhält. Diese Einstellung kann von jedem geändert werden."
-    default_external_links_in_new_tab: "Öffne externe Links in einem neuen Tab. Bentzer können dies in ihren Einstellungen ändern."
+    default_external_links_in_new_tab: "Öffne externe Links in einem neuen Tab. Benutzer können dies in ihren Einstellungen ändern."
     detect_custom_avatars: "Ob überprüft wird, dass Benutzer benutzerdefinierte Avatare hochgeladen haben."
     max_daily_gravatar_crawls: "Wie oft pro Tag Discourse höchstens auf Gravatar nach benuterdefinierten Avataren suchen soll."
     public_user_custom_fields: "Eine Whitelist von selbst definierten Feldern für einen Anwender, die öffentlich angezeigt werden können."
@@ -868,7 +872,6 @@ de:
     invited_to_private_message: "%{display_username} hat Dich zu einem privaten Gespräch eingeladen: %{link}"
     invitee_accepted: "%{display_username} hat Deine Einladung angenommen."
     linked: "%{display_username} hat dich auf %{link} verlinkt"
-    granted_badge: "Dir wurde %{link} verliehen"
   search:
     within_post: "#%{post_number} von %{username}: %{excerpt}"
     types:
@@ -880,8 +883,8 @@ de:
   most_recent_poster: "Autor des jüngsten Beitrags"
   frequent_poster: "Autor regelmäßiger Beiträge"
   redirected_to_top_reasons:
-    new_user: "Willkommen in unserem Forum! Dies sind unsere beliebtesten aktuellen Themen."
-    not_seen_in_a_month: "Willkommen zurück! Wir haben Dich länger nicht gesehen. Dies sind die während Deiner Abwesenheit aktivsten Unterhaltungen."
+    new_user: "Willkommen bei unserer Community! Dies sind die derzeit am beliebtesten Themen."
+    not_seen_in_a_month: "Willkommen zurück! Wir haben dich länger nicht gesehen. Während deiner Abwesenheit waren dies die beliebtesten Themen."
   move_posts:
     new_topic_moderator_post:
       one: "Ich habe einen Beitrag in ein neues Thema verschoben: %{topic_link}"
@@ -1028,7 +1031,7 @@ de:
 
       - Erkundige dich über Neues im [GitHub Changelog](https://github.com/discourse/discourse/commits/master).
 
-      - Upgrade deine Version unter [%{base_url}/admin/docker](%{base_url}/admin/docker) mit dem "Upgrade"-Knopf.
+      - Upgrade deine Version unter [%{base_url}/admin/upgrade](%{base_url}/admin/upgrade) mit dem "Upgrade"-Knopf.
 
       - Besuche [meta.discourse.org](http://meta.discourse.org) für Neuigkeiten, Diskussionen und Unterstützung für Discourse.
   new_version_mailer_with_notes:
@@ -1043,7 +1046,7 @@ de:
 
       - Lies nach, was sich in der neuen Version [geändert hat](https://github.com/discourse/discourse/commits/master).
 
-      - Aktualisiere dein Forum mit dem "Upgrade" Knopf auf [%{base_url}/admin/docker](%{base_url}/admin/docker).
+      - Aktualisiere dein Forum mit dem "Upgrade" Knopf auf [%{base_url}/admin/upgrade](%{base_url}/admin/upgrade).
 
       - Besuche [meta.discourse.org](http://meta.discourse.org) für weitere Neuigkeiten, Diskussionen und Hilfestellungen rund um Discourse.
 
@@ -1087,7 +1090,7 @@ de:
 
         Beachte, dass mehrere Mitglieder der Community diesen Beitrag gemeldet haben, bevor dieser versteckt wurde. Überlege dir daher, wie du deinen Beitrag unter Berücksichtigung dieses Feedbacks überarbeiten könntest. **Du kannst deinen Beitrag nach %{edit_delay} Minuten überarbeiten. Anschließend wird er automatisch wieder sichtbar.** Dadurch erhöht sich auch deine Vertrauensstufe.
 
-        Wenn dieser Beitrag jedoch ein zweites Mal von der Gemeinschaft versteckt wird, werden die Moderatoren darauf aufmerksam gemacht. Dass kann weitere Konsequenzen haben, unter anderem auch eine Sperrung deines Kontos.
+        Wenn dieser Beitrag jedoch ein zweites Mal von der Community versteckt wird, bleibt dieser solange ausgeblendet, bis ein Mitarbeiter sich darum kümmert. Das kann weitere Konsequenzen haben, unter anderem auch eine Sperrung deines Kontos.
 
         Weitere Hilfestellung findest du in unseren [Richtlinien](%{base_url}/guidelines).
     usage_tips:
@@ -1108,7 +1111,7 @@ de:
 
             <img src="http://www.discourse.org/images/welcome/progress-bar.png" width="190" height="52">
 
-        - Auf Themenübersichtsseiten bringt dich ein Klick auf den Titel eines Themas zu dem Beitrag, den du zuletzt gelesen hast. Die Zeitangaben kannst du als Abkürzungen verwenden: ein Klick auf das Datum des ersten Beitrags bringt dich zum Anfang des Themas, das Datum des aktuellsten Beitrags zum letzten Beitrag.
+        - Ein Klick auf den Titel eines Themas bringt dich immer zum nächsten ungelesenen im Thema. Benutze die Angabe der letzten Aktivität, um schnell zum ersten oder letzten Beitrag eines Themas zu springen.
 
         ## Wie kann ich antworten?
 
@@ -1135,6 +1138,8 @@ de:
         Wenn dir ein Beitrag gefällt, kannst du dies dem Autor ganz einfach mit einem Klick auf die "Gefällt mir" Schaltfläche mitteilen. Wenn du dagegen der Meinung bist, dass ein Beitrag ein Problem darstellt, dann kannst du mit der "Melden" Funktion diesen Beitrag privat seinem Autor oder direkt den Moderatoren melden.
 
         Außerdem kannst du einen Link zum Beitrag mit anderen teilen und Lesezeichen setzen, um auf ausgewählte Beiträge später über deine Benutzer-Übersichtsseite zurückkommen zu können.
+
+        [Emoji](http://www.emoji-cheat-sheet.com/) kannst du einfügen, indem du beginnst `:` einzutippen oder du verwendest die herkömmlichen Smileys `:)` :smile:
 
         ## Wer spricht mit mir?
 
@@ -1208,6 +1213,17 @@ de:
         ```
         %{logs}
         ```
+    csv_export_succeeded:
+      subject_template: "Export erfolgreich abgeschlossen"
+      text_body_template: |
+        Die Daten wurden erfolgreich exportiert.
+
+        CSV-Datei herunterladen: <a class="attachment" href="%{download_link}">%{file_name}</a>
+
+        <small>Der Download-Link zur CSV-Datei wird in 48 Stunden ungültig.</small>
+    csv_export_failed:
+      subject_template: "Export fehlgeschlagen"
+      text_body_template: "Der Export ist fehlgeschlagen. Bitte überprüfe die Logs."
     email_reject_trust_level:
       subject_template: "E-Mail-Problem -- Ungenügende Vertrauensstufe"
       text_body_template: |
@@ -1235,10 +1251,24 @@ de:
         Wir konnten deine Antwort in der E-Mail nicht auffinden. **Stelle sicher, dass deine komplette Antwort am Beginn der E-Mail steht.** Alles unterhalb der Nachricht, auf die geantwortet wurde, wird verworfen.
     email_reject_post_error:
       subject_template: "E-Mail-Problem -- Fehler beim Posten."
+      text_body_template: |
+        Es tut uns leid, aber deine E-Mail-Nachricht an %{destination} (Titel: %{former_title}) hat nicht funktioniert.
+
+        Mögliche Gründe sind: komplexe Formatierung, Nachricht zu lang oder zu kurz. Bitte versuche es erneut oder erstelle deinen Beitrag auf der Website, wenn der Fehler weiterhin auftritt.
+    email_reject_post_error_specified:
+      subject_template: "E-Mail-Problem -- Fehler beim Posten"
+      text_body_template: |
+        Es tut uns leid, aber deine E-Mail-Nachricht an %{destination} (Titel: %{former_title}) hat nicht funktioniert.
+
+        Grund:
+
+        %{post_error}
+
+        Bitte versuch es erneut, wenn du das Problem beheben kannst.
     email_reject_reply_key:
       subject_template: "E-Mail-Problem -- Ungültiger Antwort-Schlüssel"
       text_body_template: |
-        Es tut uns Leid, aber die E-Mail-Nachricht an %{destination} (Titel: „%{former_title}“) hat nicht geklappt.
+        Es tut uns leid, aber die E-Mail-Nachricht an %{destination} (Titel: „%{former_title}“) hat nicht geklappt.
         Der angegebene Antwort-Schlüssel ist ungültig oder unbekannt. Wir wissen daher nicht auf welchen Beitrag diese E-Mail antwortet. Kontaktiere einen Mitarbeiter.
     email_error_notification:
       subject_template: "E-Mail-Problem -- POP-Authentifizierungsfehler"
@@ -1435,6 +1465,10 @@ de:
     see_more: "Mehr"
     search_title: "Diese Seite durchsuchen"
     search_google: "Google"
+  login_required:
+    welcome_message: |
+      #[Wilkommen bei %{title}](#welcome)
+      Ein Benutzerkonto ist notwendig. Bitte registriere dich oder melde dich an.
   terms_of_service:
     title: "Nutzungsbedingungen"
     user_content_license: |
@@ -1459,7 +1493,7 @@ de:
     spam_hosts: "Dieser Benutzer hat versucht mehrere Antworten mit Links zur selben Domain zu posten. Beachte die newuser_spam_host_threshold Einstellung."
   email_log:
     no_user: "Kann Benutzer mit ID %{user_id} nicht finden "
-    suspended_not_pm: "Benutzer ist gesperrt und Email ist keine private Nachricht"
+    suspended_not_pm: "Benutzer ist gesperrt; keine private Nachricht"
     seen_recently: "Benutzer war kürzlich online"
     post_not_found: "Kann Beitrag mit ID %{post_id} nicht finden"
     notification_already_read: "Die Benachrichtigung dieser Mail wurde bereits gelesen"

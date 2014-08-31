@@ -14,24 +14,30 @@ class LeaderRequirements
                 :posts_read, :min_posts_read,
                 :topics_viewed_all_time, :min_topics_viewed_all_time,
                 :posts_read_all_time, :min_posts_read_all_time,
-                :num_flagged_posts, :max_flagged_posts
+                :num_flagged_posts, :max_flagged_posts,
+                :num_likes_given, :min_likes_given,
+                :num_likes_received, :min_likes_received
 
   def initialize(user)
     @user = user
   end
 
   def requirements_met?
+    !@user.suspended? &&
     days_visited >= min_days_visited &&
-      num_topics_replied_to >= min_topics_replied_to &&
-      topics_viewed >= min_topics_viewed &&
-      posts_read >= min_posts_read &&
-      num_flagged_posts <= max_flagged_posts &&
-      num_flagged_by_users <= max_flagged_by_users &&
-      topics_viewed_all_time >= min_topics_viewed_all_time &&
-      posts_read_all_time >= min_posts_read_all_time
+    num_topics_replied_to >= min_topics_replied_to &&
+    topics_viewed >= min_topics_viewed &&
+    posts_read >= min_posts_read &&
+    num_flagged_posts <= max_flagged_posts &&
+    num_flagged_by_users <= max_flagged_by_users &&
+    topics_viewed_all_time >= min_topics_viewed_all_time &&
+    posts_read_all_time >= min_posts_read_all_time &&
+    num_likes_given >= min_likes_given &&
+    num_likes_received >= min_likes_received
   end
 
   def requirements_lost?
+    @user.suspended? ||
     days_visited < min_days_visited * LOW_WATER_MARK ||
     num_topics_replied_to < min_topics_replied_to * LOW_WATER_MARK ||
     topics_viewed < min_topics_viewed * LOW_WATER_MARK ||
@@ -39,7 +45,9 @@ class LeaderRequirements
     num_flagged_posts > max_flagged_posts ||
     num_flagged_by_users > max_flagged_by_users ||
     topics_viewed_all_time < min_topics_viewed_all_time ||
-    posts_read_all_time < min_posts_read_all_time
+    posts_read_all_time < min_posts_read_all_time ||
+    num_likes_given < min_likes_given * LOW_WATER_MARK ||
+    num_likes_received < min_likes_received * LOW_WATER_MARK
   end
 
   def days_visited
@@ -119,6 +127,23 @@ class LeaderRequirements
   def max_flagged_by_users
     SiteSetting.leader_requires_max_flagged
   end
+
+  def num_likes_given
+    UserAction.where(user_id: @user.id, action_type: UserAction::LIKE).where('created_at > ?', TIME_PERIOD.days.ago).count
+  end
+
+  def min_likes_given
+    SiteSetting.leader_requires_likes_given
+  end
+
+  def num_likes_received
+    UserAction.where(user_id: @user.id, action_type: UserAction::WAS_LIKED).where('created_at > ?', TIME_PERIOD.days.ago).count
+  end
+
+  def min_likes_received
+    SiteSetting.leader_requires_likes_received
+  end
+
 
   def self.clear_cache
     $redis.del NUM_TOPICS_KEY

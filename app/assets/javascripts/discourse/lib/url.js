@@ -78,6 +78,9 @@ Discourse.URL = Em.Object.createWithMixins({
     jumpScheduled = true;
     Em.run.schedule('afterRender', function() {
       var $elem = $(id);
+      if ($elem.length === 0) {
+        $elem = $("[name=" + id.replace('#', ''));
+      }
       if ($elem.length > 0) {
         $('html,body').scrollTop($elem.offset().top - $('header').height() - 15);
         jumpScheduled = false;
@@ -220,7 +223,9 @@ Discourse.URL = Em.Object.createWithMixins({
             highlightOnInsert: closest,
             enteredAt: new Date().getTime().toString()
           });
-          topicProgressController.set('progressPosition', closest);
+          var closestPost = postStream.closestPostForPostNumber(closest),
+              progress = postStream.progressIndexOfPost(closestPost);
+          topicProgressController.set('progressPosition', progress);
           Discourse.PostView.considerHighlighting(topicController, closest);
         }).then(function() {
           Discourse.URL.jumpToPost(closest);

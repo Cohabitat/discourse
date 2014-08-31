@@ -155,11 +155,17 @@ class PostAction < ActiveRecord::Base
   end
 
   def add_moderator_post_if_needed(moderator, disposition, delete_post=false)
-    return unless related_post
-    return if related_post.topic.posts.where(post_type: Post.types[:moderator_action]).exists?
+    return if related_post.nil?
+    return if moderator_already_replied?(related_post.topic, moderator)
     message_key = "flags_dispositions.#{disposition}"
     message_key << "_and_deleted" if delete_post
     related_post.topic.add_moderator_post(moderator, I18n.t(message_key))
+  end
+
+  def moderator_already_replied?(topic, moderator)
+    topic.posts
+         .where("user_id = :user_id OR post_type = :post_type", user_id: moderator.id, post_type: Post.types[:moderator_action])
+         .exists?
   end
 
   def self.create_message_for_post_action(user, post, post_action_type_id, opts)
@@ -238,14 +244,15 @@ class PostAction < ActiveRecord::Base
   rescue ActiveRecord::RecordNotUnique
     # can happen despite being .create
     # since already bookmarked
-    true
+    PostAction.where(where_attrs).first
   end
 
   def self.remove_act(user, post, post_action_type_id)
     finder = PostAction.where(post_id: post.id, user_id: user.id, post_action_type_id: post_action_type_id)
-    finder = finder.with_deleted if user.try(:staff?)
+    finder = finder.with_deleted.includes(:post) if user.try(:staff?)
     if action = finder.first
       action.remove_act!(user)
+      action.post.unhide! if action.staff_took_action
     end
   end
 
@@ -368,13 +375,7 @@ class PostAction < ActiveRecord::Base
 
   def notify_subscribers
     if (is_like? || is_flag?) && post
-      MessageBus.publish("/topic/#{post.topic_id}",{
-                      id: post.id,
-                      post_number: post.post_number,
-                      type: "acted"
-                    },
-                    group_ids: post.topic.secure_group_ids
-      )
+      post.publish_change_to_clients! :acted
     end
   end
 
@@ -401,7 +402,7 @@ class PostAction < ActiveRecord::Base
     end
 
     Post.where(id: post.id).update_all(["hidden = true, hidden_at = CURRENT_TIMESTAMP, hidden_reason_id = COALESCE(hidden_reason_id, ?)", reason])
-    Topic.where(["id = :topic_id AND NOT EXISTS(SELECT 1 FROM POSTS WHERE topic_id = :topic_id AND NOT hidden)", topic_id: post.topic_id]).update_all(visible: false)
+    Topic.where("id = :topic_id AND NOT EXISTS(SELECT 1 FROM POSTS WHERE topic_id = :topic_id AND NOT hidden)", topic_id: post.topic_id).update_all(visible: false)
 
     # inform user
     if post.user
@@ -425,8 +426,6 @@ class PostAction < ActiveRecord::Base
     PostActionType.types[post_action.post_action_type_id]
   end
 
-  protected
-
   def self.target_moderators
     Group[:moderators].name
   end
@@ -442,21 +441,21 @@ end
 #  user_id             :integer          not null
 #  post_action_type_id :integer          not null
 #  deleted_at          :datetime
-#  created_at          :datetime
-#  updated_at          :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #  deleted_by_id       :integer
 #  related_post_id     :integer
 #  staff_took_action   :boolean          default(FALSE), not null
-#  deferred_by_id       :integer
-#  targets_topic       :boolean          default(FALSE)
+#  deferred_by_id      :integer
+#  targets_topic       :boolean          default(FALSE), not null
 #  agreed_at           :datetime
 #  agreed_by_id        :integer
-#  deferred_at          :datetime
+#  deferred_at         :datetime
 #  disagreed_at        :datetime
 #  disagreed_by_id     :integer
 #
 # Indexes
 #
-#  idx_unique_actions             (user_id,post_action_type_id,post_id,deleted_at,targets_topic) UNIQUE
+#  idx_unique_actions             (user_id,post_action_type_id,post_id,targets_topic) UNIQUE
 #  index_post_actions_on_post_id  (post_id)
 #

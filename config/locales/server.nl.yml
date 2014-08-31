@@ -20,6 +20,7 @@ nl:
   posts: "berichten"
   loading: "Laden"
   powered_by_html: 'Powered by <a href="http://www.discourse.org">Discourse</a>, werkt het beste met JavaScript ingeschakeld'
+  log_in: "Inloggen"
   via: "%{username} via %{site_name}"
   is_reserved: "is gereserveerd"
   errors:
@@ -172,7 +173,6 @@ nl:
   vip_category_name: "Lounge"
   vip_category_description: "Een categorie exclusief voor leden met trust level 3 en hoger."
   meta_category_name: "Meta"
-  meta_category_description: "Discussies over dit forum, de organisatie, hoe het werk en hoe het verbeterd kan worden."
   staff_category_name: "Staf"
   staff_category_description: "Privécategorie voor stafgesprekken. Topics zijn alleen zichtbaar voor admins en moderatoren."
   lounge_welcome:
@@ -202,6 +202,7 @@ nl:
       title: "ervaren lid"
     change_failed_explanation: "Je probeerde %{user_name} te degraderen naar '%{new_trust_level}'. Echter, het trust level is al '%{current_trust_level}'. %{user_name} blijft op trust level '%{current_trust_level}'"
   rate_limiter:
+    slow_down: "Je hebt deze actie te vaak uitgevoerd. Probeer het later nog een keer."
     too_many_requests: "Er is een dagelijks limiet voor hoe vaak je dat kan doen. Wacht %{time_left} voordat je dit opnieuw probeert."
     hours:
       one: "1 uur"
@@ -353,7 +354,6 @@ nl:
       email_body: "%{link}\n\n%{message}"
   flagging:
     you_must_edit: '<p>Je bericht is gemarkeerd door andere gebruikers van dit forum. Kijk bij je <a href="/my/private-messages">privéberichten</a> om te zien waarom.</p>'
-    user_must_edit: '<p>Gemelde inhoud tijdelijk verborgen.</p>'
   archetypes:
     regular:
       title: "Standaard topic"
@@ -560,7 +560,6 @@ nl:
     github_client_id: "github_client_id (registreer op https://github.com/settings/applications)"
     github_client_secret: "github_client_secret (registreer op https://github.com/settings/applications)"
     maximum_backups: "Het maximum aantal backups om te bewaren. Oudere backups worden automatisch verwijderd."
-    enable_s3_backups: "Upload voltooide backups naar S3. Zorg ervoor dat je je S3 logingegevens hebt ingevuld."
     s3_backup_bucket: "De S3 bucket voor de backups. WAARSCHUWING: zorg er voor dat dit een privébucket is."
     active_user_rate_limit_secs: "Hoe vaak we het 'last_seen_at'-veld updaten, in seconden."
     previous_visit_timeout_hours: "Hoe lang een bezoek duurt voordat we het als het 'vorige' bezoek beschouwen, in uren."
@@ -579,8 +578,6 @@ nl:
     category_colors: "Een lijst me hexadecimale kleurwaardes die gebruikt kunnen worden voor categorieën."
     authorized_extensions: "Een lijst met bestandsextensies die mogen worden geupload (gebruik '*' voor alle bestandsextensies)"
     title_prettify: "Voorkom veel voorkomende fouten in titels (alles in hoofdletters, eerste woord zonder hoofdletter, meerdere ! en ?, een extra . aan het eind, etc."
-    topic_views_heat_low: "Het aantal keer dat een topic bekeken moet zijn om een laag 'heat' level te hebben."
-    topic_views_heat_medium: "Het aantal keer dat een topic bekeken moet zijn om een medium 'heat' level te hebben."
     faq_url: "Heb je je FAQ ergens extern staan, geef hier dan de volledige url op."
     tos_url: "Heb je je Algemene Voorwaarden ergens extern staan, geef hier dan de volledige url op."
     privacy_policy_url: "Heb je je Privacy Voorwaarden ergens extern staan, geef hier dan de volledige url op."
@@ -607,7 +604,7 @@ nl:
     suppress_uncategorized_badge: "Laat de badge niet zien voor topics zonder categorie in de topiclijsten."
     global_notice: "Laat een LET OP, BELANGRIJK-banner zien aan alle gebruikers. Laat leeg om niet te tonen (HTML is toegestaan)."
     enable_names: "Gebruikers mogen hun volledige naam laten zien. Zet uit om volledige namen te verbergen."
-    display_name_on_posts: "Laat de volledige naam van een gebruiker bij zijn berichten zijn, naar de @gebruikersnaam"
+    display_name_on_posts: "Laat de volledige naam van een gebruiker bij zijn berichten zien, na de @gebruikersnaam"
     short_progress_text_threshold: "Als het aantal berichten in een topic meer is dan dit aantal zal de voortgangsbalk alleen het nummer van het huidige bericht tonen. Als je de breedte van de voortgangsbalk verandert, moet je dit getal misschien ook aanpassen."
     default_code_lang: "Standaard programmeertaal die gebruikt wordt voor syntax highlighting van GitHub codeblokken (lang-auto, ruby, python etc.)"
     tos_accept_required: "Gebruikers moeten een vinkje zetten bij het inschrijven om aan te geven dat ze akkoord gaan met de algemene voorwaarden als deze optie actief is. Ga naar 'Inschijfformulier: Algemene Voorwaarden' in de Inhoud tab om het bericht te wijzigen."
@@ -630,20 +627,16 @@ nl:
     invited_to_private_message: "%{display_username} heeft je uitgenodigd voor een privé-bericht: %{link}"
     invitee_accepted: "%{display_username} heeft je uitnodiging geaccepteerd"
     linked: "%{display_username} heeft je gelinkt in %{link}"
-    granted_badge: "%{link} is aan jou toegekend"
   search:
     within_post: "#%{post_number} door %{username}: %{excerpt}"
     types:
-      category: 'Categorien'
+      category: 'Categorieën'
       topic: 'Resultaten'
       user: 'Leden'
   original_poster: "Oorspronkelijk geplaatst door"
   most_posts: "Meer berichten"
   most_recent_poster: "Meest recente schrijver"
   frequent_poster: "Frequente schrijver"
-  redirected_to_top_reasons:
-    new_user: "Welkom bij deze community! Hier zijn een aantal van de meest populaire topics."
-    not_seen_in_a_month: "Welkom terug! We hebben je een tijdje niet gezien. Dit is een overzicht van de topics die zijn gemaakt sinds je weg was."
   move_posts:
     new_topic_moderator_post:
       one: "Ik heb een bericht naar een nieuwe topic verplaatst: %{topic_link}"
@@ -888,6 +881,10 @@ nl:
     see_more: "Meer"
     search_title: "Zoek op deze site"
     search_google: "Google"
+  login_required:
+    welcome_message: |
+      #[Welkom op %{title}](#welcome)
+      Voor dit forum is een account nodig. Maak een account aan of log in om verder te gaan.
   terms_of_service:
     title: "Algemene Voorwaarden"
     user_content_license: |
@@ -911,7 +908,7 @@ nl:
     sockpuppet: "Een nieuwe gebruiker maakte een nieuwe topic en een andere gebruiker reageerde - vanaf hetzelfde IP-adres. Zie de flag_sockpuppets instelling."
   email_log:
     no_user: "Kan geen gebruiker met id %{user_id} vinden"
-    suspended_not_pm: "Gebruiker is geschorst en email is geen privébericht"
+    suspended_not_pm: "De gebruiker is geschorst, geen privébericht"
     seen_recently: "Gebruiker was recentelijk nog online"
     post_not_found: "Kan geen bericht met id %{post_id} vinden"
     notification_already_read: "De notificatie waar deze mail voor is is al gezien"
@@ -928,6 +925,8 @@ nl:
   guidelines: "Regels"
   privacy: "Privacy"
   edit_this_page: "Wijzig deze pagina"
+  static_topic_first_reply: |
+    Verander het eerste bericht in dit Topic om de inhoud van de %{page_name} pagina te wijzigen.
   guidelines_topic:
     title: "FAQ/Regels"
   tos_topic:

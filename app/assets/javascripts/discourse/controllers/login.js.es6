@@ -45,9 +45,15 @@ export default DiscourseController.extend(ModalFunctionality, {
 
   actions: {
     login: function() {
+      var self = this;
+
+      if(this.blank('loginName') || this.blank('loginPassword')){
+        self.flash(I18n.t('login.blank_username_or_password'), 'error');
+        return;
+      }
+
       this.set('loggingIn', true);
 
-      var self = this;
       Discourse.ajax("/session", {
         data: { login: this.get('loginName'), password: this.get('loginPassword') },
         type: 'POST'
@@ -75,11 +81,7 @@ export default DiscourseController.extend(ModalFunctionality, {
 
       }, function() {
         // Failed to login
-        if (self.blank('loginName') || self.blank('loginPassword')) {
-          self.flash(I18n.t('login.blank_username_or_password'), 'error');
-        } else {
-          self.flash(I18n.t('login.error'), 'error');
-        }
+        self.flash(I18n.t('login.error'), 'error');
         self.set('loggingIn', false);
       });
 
@@ -103,7 +105,7 @@ export default DiscourseController.extend(ModalFunctionality, {
             "menubar=no,status=no,height=" + height + ",width=" + width +  ",left=" + left + ",top=" + top);
         var self = this;
         var timer = setInterval(function() {
-          if(w.closed) {
+          if(!w || w.closed) {
             clearInterval(timer);
             self.set('authenticate', null);
           }

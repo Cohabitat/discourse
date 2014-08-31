@@ -19,6 +19,11 @@ zh_CN:
             mb: MB
             tb: TB
     dates:
+      time: "h:mm a"
+      long_no_year: "MMM DD h:mm a"
+      long_no_year_no_time: "MMM D"
+      long_with_year: "YYYY MMM D h:mm a"
+      long_with_year_no_time: "YYYY MMM D"
       tiny:
         half_a_minute: "< 1 分钟"
         less_than_x_seconds:
@@ -70,6 +75,7 @@ zh_CN:
     yes_value: "是"
     generic_error: "抱歉，发生了一个错误。"
     generic_error_with_reason: "发生了一个错误：%{error}"
+    sign_up: "注册"
     log_in: "登录"
     age: "时间"
     joined: "加入时间："
@@ -112,6 +118,8 @@ zh_CN:
       simple_title: "关于"
       title: "关于 %{title}"
       stats: "站点统计"
+      our_admins: "我们的管理员们"
+      our_moderators: "我们的版主们"
       stat:
         all_time: "所有时间内"
         last_7_days: "7 天以内"
@@ -220,7 +228,6 @@ zh_CN:
     user:
       said: "{{username}}说："
       profile: "个人资料"
-      show_profile: "访问个人资料"
       mute: "防打扰"
       edit: "修改设置"
       download_archive: "下载我的帖子的存档"
@@ -299,19 +306,19 @@ zh_CN:
         title: "个人资料背景"
       email:
         title: "电子邮箱"
-        instructions: "您的电子邮箱绝不会被公开显示。"
+        instructions: "绝不会被公开显示。"
         ok: "看起来不错哦，我们会发送电子邮件让您确认。"
         invalid: "请填写正确的电子邮箱地址。"
         authenticated: "您的电子邮箱已经被 {{provider}} 确认有效。"
         frequency: "只有当您最近一段时间没有访问时，我们才会把您未读过的内容发送到您的电子邮箱。"
       name:
         title: "名字"
-        instructions: "名字全称"
+        instructions: "名字全称。"
         too_short: "您设置的名字太短了。"
         ok: "您的名字符合要求。"
       username:
         title: "用户名"
-        instructions: "您的@username 必须是唯一，没有空格，简短的."
+        instructions: "必须唯一，没有空格，简短。"
         short_instructions: "其他人可以用 @{{username}} 来提及您。"
         available: "您的用户名可用。"
         global_match: "电子邮箱与注册用户名相匹配。"
@@ -412,12 +419,13 @@ zh_CN:
       prev_page: "当尝试载入时"
       reasons:
         network: "网络错误"
-        server: "服务器错误：{{code}}"
+        server: "服务器错误"
+        forbidden: "访问被阻止"
         unknown: "错误"
       desc:
         network: "请检查您的网络连接。"
         network_fixed: "似乎恢复正常了。"
-        server: "出错了。"
+        server: "错误代码：{{status}}"
         unknown: "出错了。"
       buttons:
         back: "返回"
@@ -428,6 +436,7 @@ zh_CN:
     read_only_mode:
       enabled: "一个管理员启用了只读模式。您可以继续浏览这个站点但是无法进行交互。"
       login_disabled: "只读模式下不允许登录。"
+    too_few_topics_notice: "创建至少 5 个公开主题和 %{posts} 个公开帖子以开始讨论。新用户无法得到信任等级除非已经有内容让用户阅读。这个消息仅显示给职员。"
     learn_more: "了解更多..."
     year: '年'
     year_desc: '365 天以前创建的主题'
@@ -451,6 +460,7 @@ zh_CN:
       enabled_description: "这个主题包含已删除的帖子，他们已经被隐藏。"
       disabled_description: "主题中被删除的帖子已显示。"
       enable: "隐藏已删除的帖子"
+      disable: "显示已删除的帖子"
     private_message_info:
       title: "私下交流"
       invite: "邀请其他..."
@@ -591,7 +601,6 @@ zh_CN:
       invitee_accepted: "<i title='已接受您的邀请' class='fa fa-user'></i><p><span>{{username}}</span> 已接受您的邀请</p>"
       moved_post: "<i title='移动了帖子' class='fa fa-sign-out'></i><p><span>{{username}}</span> 移动了 {{description}}</p>"
       linked: "<i title='被外链的帖子' class='fa fa-arrow-left'></i><p><span>{{username}}</span> {{description}}</p>"
-      granted_badge: "<i title='徽章授予' class='fa fa-certificate'></i><p>您被授予了 {{description}}</p>"
     upload_selector:
       title: "插入图片"
       title_with_attachments: "上传图片或文件"
@@ -648,6 +657,9 @@ zh_CN:
         hot: "没有热门主题。"
         category: "没有 {{category}} 分类的主题。"
         top: "没有最佳主题。"
+        educate:
+          new: '<p>默认情况下，最近两天创建的主题是新主题。</p><p>您可以在您的<a href="%{userPrefsUrl}">设置</a>里改变这一行为。</p>'
+          unread: '<p>默认情况下，未读提醒将仅对以下主题显示：</p><ul><li>创建的</li><li>回复的</li><li>阅读超过4分钟的</li></ul><p>或者，如果您在每个主题底部的通知控制中选择了追踪或监视的。</p><p>您可以改变您的<a href="%{userPrefsUrl}">用户设置</a>。</p>'
       bottom:
         latest: "没有更多主题可看了。"
         hot: "没有更多热门主题可看了。"
@@ -701,7 +713,6 @@ zh_CN:
       browse_all_categories: 浏览所有分类
       view_latest_topics: 浏览最新主题
       suggest_create_topic: 马上创建一个主题吧！
-      read_position_reset: "您的阅读位置已经被重置。"
       jump_reply_up: 跳转至更早的回复
       jump_reply_down: 跳转至更晚的回复
       deleted: "此主题已被删除"
@@ -883,7 +894,7 @@ zh_CN:
         no_value: "否"
         yes_value: "是"
       wiki:
-        about: "这个帖子是维基；任何人都能编辑它"
+        about: "这个帖子是维基；基础用户能编辑它"
       archetypes:
         save: '保存选项'
       controls:
@@ -892,6 +903,7 @@ zh_CN:
         has_liked: "您已经赞了本帖"
         undo_like: "撤销赞"
         edit: "编辑本帖"
+        edit_anonymous: "抱歉，但是您需要登陆后才能编辑该贴。"
         flag: "私下报告本帖以提醒管理人员关注或发送私信通知"
         delete: "删除本帖"
         undelete: "恢复本帖"
@@ -1018,7 +1030,6 @@ zh_CN:
       save: '保存分类'
       creation_error: 创建此分类时发生了错误。
       save_error: 在保存此分类时发生了错误。
-      more_posts: "浏览全部 {{posts}} ..."
       name: "分类名称"
       description: "描述"
       topic: "分类主题"
@@ -1110,6 +1121,12 @@ zh_CN:
     posts: "帖子"
     posts_lowercase: "帖子"
     posts_long: "本主题有 {{number}} 个帖子"
+    posts_likes_MF: |
+      这个主题有 {count, plural, one {1 个帖子}其他{# 帖子数}} {ratio, select,
+      low {with a high like to like ratio}
+      med {with a very high post to like ratio}
+      high {with an extremely high post to like ratio}
+      other {}}
     original_post: "原始帖"
     views: "浏览"
     views_lowercase: "浏览"
@@ -1126,6 +1143,8 @@ zh_CN:
     changed_by: "由 {{author}}"
     categories_list: "分类列表"
     filters:
+      with_topics: "%{filter} 主题"
+      with_category: "%{filter} %{category} 的主题"
       latest:
         title: "最新"
         help: "最新发布的帖子"
@@ -1172,7 +1191,7 @@ zh_CN:
         help: "在 {{categoryName}} 分类中热门的主题"
       top:
         title: "热门"
-        help: "热门主题"
+        help: "最近一年、一月、一周或一天的最活跃主题"
         yearly:
           title: "年度热门"
         monthly:
@@ -1261,7 +1280,7 @@ zh_CN:
         disagree_flag_title: "拒绝这个报告，无效或不正确"
         clear_topic_flags: "完成"
         clear_topic_flags_title: "这个主题已被调查且提案已被解决。单击<strong>完成</strong>以删除报告。"
-        more: "（更多……）"
+        more: "（更多回复...）"
         dispositions:
           agreed: "已批准"
           disagreed: "未批准"
@@ -1275,6 +1294,7 @@ zh_CN:
         no_results: "没有报告"
         topic_flagged: "这个<strong>主题</strong>已被报告。"
         visit_topic: "浏览主题才能操作"
+        was_edited: "帖子在第一次标记后被编辑"
         summary:
           action_type_3:
             other: "偏离主题 x{{count}}"
@@ -1348,7 +1368,8 @@ zh_CN:
           backup:
             text: "备份"
             title: "建立一个备份"
-            confirm: "您确定要建立一个备份吗？"
+            confirm: "您确定要开始建立一个备份吗？"
+            without_uploads: "是（但不上传）"
           download:
             text: "下载"
             title: "下载该备份"
@@ -1365,6 +1386,12 @@ zh_CN:
             text: "回滚"
             title: "将数据库回滚到之前的工作状态"
             confirm: "您确定要将数据库回滚到之前的工作状态吗？"
+      export_csv:
+        users:
+          text: "导出用户"
+          title: "导出用户列表至 CSV 文件。"
+        success: "导出开始了，您将会看到进度提示。"
+        failed: "导出失败。请检查日志。"
       customize:
         title: "定制"
         long_title: "站点定制"
@@ -1529,6 +1556,8 @@ zh_CN:
             label: "新："
             ip_address: "IP地址"
             add: "添加"
+        logster:
+          title: "错误日志"
       impersonate:
         title: "以用户角度检视"
         username_or_email: "用户名或用户电子邮件"
@@ -1591,6 +1620,7 @@ zh_CN:
         edit_title: "编辑头衔"
         save_title: "保存头衔"
         refresh_browsers: "强制浏览器刷新"
+        refresh_browsers_message: "消息发送至所有用户！"
         show_public_profile: "显示公开介绍"
         impersonate: '检视角度'
         ip_lookup: "IP 查询"
@@ -1605,13 +1635,15 @@ zh_CN:
         reputation: 声誉
         permissions: 权限
         activity: 活动
-        like_count: 收到的赞
+        like_count: 给出的赞 / 收到的赞
+        last_100_days: '在最近 100 天'
         private_topics_count: 私有主题数量
         posts_read_count: 已阅帖子数量
         post_count: 创建的帖子数量
         topics_entered: 已查看的主题数量
         flags_given_count: 所做报告数量
         flags_received_count: 收到报告数量
+        flags_given_received_count: '给出的标记 / 收到的标记'
         approve: '批准'
         approved_by: "批准人"
         approve_success: "用户已被批准， 激活邮件已发送。"
@@ -1625,6 +1657,9 @@ zh_CN:
           other: "不能删除所有帖子。一些帖子发表于 %{count} 天前。（设置项：delete_user_max_post_age）"
         cant_delete_all_too_many_posts:
           other: "不能删除所有帖子，因为用户有超过 %{count} 个帖子。（delete_all_posts_max）"
+        delete_confirm: "您确定要删除这个用户吗？这个操作是不可逆的！"
+        delete_and_block: "删除并<b>封禁</b>该邮件地址和IP地址"
+        delete_dont_block: "仅删除"
         deleted: "该用户已被删除。"
         delete_failed: "在删除用户时发生了错误。请确保删除该用户前删除了该用户的所有帖子。"
         send_activation_email: "发送激活邮件"
@@ -1657,9 +1692,18 @@ zh_CN:
           posts_read_all_time: "已读的帖子 (全部)"
           flagged_posts: "旗标帖子"
           flagged_by_users: "标记的用户"
+          likes_given: "给出的赞"
+          likes_received: "收到的赞"
           qualifies: "符合等级3的信用度"
           will_be_promoted: "在24小时后升级"
           does_not_qualify: "未符合等级3的信用度"
+        sso:
+          title: "单点登录"
+          external_id: "外部 ID"
+          external_username: "用户名"
+          external_name: "名字"
+          external_email: "电子邮件"
+          external_avatar_url: "头像 URL"
       site_content:
         none: "选择内容类型以开始编辑。"
         title: '内容'
@@ -1739,6 +1783,12 @@ zh_CN:
       title: '键盘快捷键'
       jump_to:
         title: '跳转'
+        home: '<b>g</b> 然后 <b>h</b> 首页（最新内容）'
+        latest: '<b>g</b> 然后 <b>l</b> 最新内容'
+        new: '<b>g</b> 然后 <b>n</b> 新主题'
+        unread: '<b>g</b> 然后 <b>u</b> 未读主题'
+        starred: '<b>g</b> 然后 <b>f</b> 收藏的主题'
+        categories: '<b>g</b> 然后 <b>c</b> 分类列表'
       navigation:
         title: '导航'
         jump: '<b>#</b> 跳转到帖子标号'
@@ -1765,6 +1815,10 @@ zh_CN:
         bookmark: '<b>b</b> 给帖子添加书签'
         edit: '<b>e</b> 编辑帖子'
         delete: '<b>d</b> 删除帖子'
+        mark_muted: '<b>m</b> 然后 <b>m</b> 免打扰主题'
+        mark_regular: '<b>m</b> 然后 <b>r</b> 设为常规主题'
+        mark_tracking: '<b>m</b> 然后 <b>t</b> 追踪主题'
+        mark_watching: '<b>m</b> 然后 <b>w</b> 关注主题'
     badges:
       title: 徽章
       allow_title: "允许使用徽章作为头衔？"

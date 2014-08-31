@@ -58,7 +58,7 @@ module Import
     rescue SystemExit
       log "Restore process was cancelled!"
       rollback
-    rescue Exception => ex
+    rescue => ex
       log "EXCEPTION: " + ex.message
       log ex.backtrace.join("\n")
       rollback
@@ -93,6 +93,7 @@ module Import
 
     def initialize_state
       @success = false
+      @db_was_changed = false
       @current_db = RailsMultisite::ConnectionManagement.current_db
       @current_version = BackupRestore.current_version
       @timestamp = Time.now.strftime("%Y-%m-%d-%H%M%S")
@@ -142,7 +143,7 @@ module Import
     end
 
     def sidekiq_has_running_jobs?
-      Sidekiq::Workers.new.each do |process_id, thread_id, worker|
+      Sidekiq::Workers.new.each do |_, _, worker|
         payload = worker.try(:payload)
         return true if payload.try(:all_sites)
         return true if payload.try(:current_site_id) == @current_db
@@ -244,6 +245,8 @@ module Import
         "COMMIT;"
       ].join("\n")
 
+      @db_was_changed = true
+
       User.exec_sql(sql)
     end
 
@@ -275,7 +278,7 @@ module Import
 
     def rollback
       log "Trying to rollback..."
-      if BackupRestore.can_rollback?
+      if @db_was_changed && BackupRestore.can_rollback?
         log "Rolling back..."
         BackupRestore.move_tables_between_schemas("backup", "public")
       else

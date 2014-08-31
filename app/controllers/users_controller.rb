@@ -205,13 +205,17 @@ class UsersController < ApplicationController
   def password_reset
     expires_now()
 
-    @user = EmailToken.confirm(params[:token])
+    if EmailToken.valid_token_format?(params[:token])
+      @user = EmailToken.confirm(params[:token])
 
-    if @user
-      session[params[:token]] = @user.id
+      if @user
+        session["password-#{params[:token]}"] = @user.id
+      else
+        user_id = session["password-#{params[:token]}"]
+        @user = User.find(user_id) if user_id
+      end
     else
-      user_id = session[params[:token]]
-      @user = User.find(user_id) if user_id
+      @invalid_token = true
     end
 
     if !@user
@@ -298,7 +302,7 @@ class UsersController < ApplicationController
   end
 
   def send_activation_email
-    @user = fetch_user_from_params
+    @user = fetch_user_from_params(include_inactive: true)
     @email_token = @user.email_tokens.unconfirmed.active.first
     enqueue_activation_email if @user
     render nothing: true

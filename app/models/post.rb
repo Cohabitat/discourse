@@ -87,6 +87,15 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def publish_change_to_clients!(type)
+    MessageBus.publish("/topic/#{topic_id}", {
+        id: id,
+        post_number: post_number,
+        updated_at: Time.now,
+        type: type
+    }, group_ids: topic.secure_group_ids)
+  end
+
   def trash!(trashed_by=nil)
     self.topic_links.each(&:destroy)
     super(trashed_by)
@@ -206,7 +215,7 @@ class Post < ActiveRecord::Base
   def has_host_spam?
     return false if acting_user.present? && acting_user.has_trust_level?(:basic)
 
-    total_hosts_usage.each do |host, count|
+    total_hosts_usage.each do |_, count|
       return true if count >= SiteSetting.newuser_spam_host_threshold
     end
 
@@ -494,9 +503,9 @@ class Post < ActiveRecord::Base
 
   def parse_quote_into_arguments(quote)
     return {} unless quote.present?
-    args = {}
+    args = HashWithIndifferentAccess.new
     quote.first.scan(/([a-z]+)\:(\d+)/).each do |arg|
-      args[arg[0].to_sym] = arg[1].to_i
+      args[arg[0]] = arg[1].to_i
     end
     args
   end
@@ -554,8 +563,8 @@ end
 #  post_number             :integer          not null
 #  raw                     :text             not null
 #  cooked                  :text             not null
-#  created_at              :datetime
-#  updated_at              :datetime
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
 #  reply_to_post_number    :integer
 #  reply_count             :integer          default(0), not null
 #  quote_count             :integer          default(0), not null

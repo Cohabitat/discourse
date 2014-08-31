@@ -35,6 +35,8 @@ en:
   via: "%{username} via %{site_name}"
   is_reserved: "is reserved"
 
+  purge_reason: "Automatically deleted due to being old and unverified"
+
   errors:
     messages:
       too_long_validation: "is limited to %{max} characters; you entered %{length}."
@@ -229,12 +231,12 @@ en:
   vip_category_description: "A category exclusive to members with trust level 3 and higher."
 
   meta_category_name: "Meta"
-  meta_category_description: "Discussion about this forum, its organization, how it works, and how we can improve it."
+  meta_category_description: "Discussion about this site, its organization, how it works, and how we can improve it."
 
   staff_category_name: "Staff"
   staff_category_description: "Private category for staff discussions. Topics are only visible to admins and moderators."
 
-  assets_topic_body: "This is a permanent topic, visible only to staff, for storing images and files used in the forum design. Don't delete it!\n\n\nHere's how:\n\n\n1. Reply to this topic.\n2. Upload all the images you wish to use for logos, favicons, and so forth here. (Use the upload toolbar icon in the post editor, or drag-and-drop or paste images.)\n3. Submit your reply to post it.\n4. Right click the images in your new post to get the path to the uploaded images, or click the edit icon to edit your post and retrieve the path to the images. Copy the image paths.\n5. Paste those image paths into [basic settings](/admin/site_settings/category/required).\n\n\nAlso, if you need to enable different file type uploads, edit `authorized_extensions` in the [file settings](/admin/site_settings/category/files)."
+  assets_topic_body: "This is a permanent topic, visible only to staff, for storing images and files used in the site design. Don't delete it!\n\n\nHere's how:\n\n\n1. Reply to this topic.\n2. Upload all the images you wish to use for logos, favicons, and so forth here. (Use the upload toolbar icon in the post editor, or drag-and-drop or paste images.)\n3. Submit your reply to post it.\n4. Right click the images in your new post to get the path to the uploaded images, or click the edit icon to edit your post and retrieve the path to the images. Copy the image paths.\n5. Paste those image paths into [basic settings](/admin/site_settings/category/required).\n\n\nIf you need to enable different file type uploads, edit `authorized_extensions` in the [file settings](/admin/site_settings/category/files)."
 
   lounge_welcome:
     title: "Welcome to the Lounge"
@@ -242,9 +244,9 @@ en:
 
       Congratulations! :confetti_ball:
 
-      If you can see this topic, you were recently promoted to [trust level 3 (leader)][trust].
+      If you can see this topic, you were recently promoted to [trust level 3 (veteran)][trust].
 
-      > Leaders are some of the most active and prolific contributors. They set a positive example for the community through their actions and their posts.
+      > Veterans are some of the most active and prolific contributors. They set a positive example for the community through their actions and their posts.
 
       You can now &hellip;
 
@@ -253,7 +255,7 @@ en:
       * Have all your links followed ([automatic nofollow](http://en.wikipedia.org/wiki/Nofollow) is removed)
       * Access a private Lounge category only visible to users at trust level 3 and higher
 
-      Here's the [current list of users who made it to trust level 3](/badges/3/leader). Be sure to say hi!
+      Here's the [current list of users who made it to trust level 3](/badges/3/veteran). Be sure to say hi!
 
       Thanks for being an important part of this community!
 
@@ -285,13 +287,14 @@ en:
     regular:
       title: "regular user"
     leader:
-      title: "leader"
+      title: "veteran"
     elder:
       title: "elder"
     change_failed_explanation: "You attempted to demote %{user_name} to '%{new_trust_level}'. However their trust level is already '%{current_trust_level}'. %{user_name} will remain at '%{current_trust_level}'"
 
 
   rate_limiter:
+    slow_down: "You have performed this action too many times, try again later"
     too_many_requests: "We have a daily limit on how many times that action can be taken. Please wait %{time_left} before trying again."
     hours:
       one: "1 hour"
@@ -456,7 +459,7 @@ en:
 
   flagging:
     you_must_edit: '<p>Your post was flagged by the community. Please <a href="/my/private-messages">see your private messages</a>.</p>'
-    user_must_edit: '<p>Flagged content temporarily hidden.</p>'
+    user_must_edit: '<p>This post was flagged by the community and is temporarily hidden.</p>'
 
   archetypes:
     regular:
@@ -723,7 +726,7 @@ en:
     track_external_right_clicks: "Track external links that are right clicked (eg: open in new tab) disabled by default because it rewrites URLs"
     topics_per_page: "How many topics are loaded by default on the topic list, and when scrolling down to load more topics"
     posts_per_page: "How many posts are loaded by default on a topic, and when scrolling down to load more posts"
-    site_contact_username: "All automated private messages sent by the forum will be from this user; if left blank the default System account will be used."
+    site_contact_username: "All automated private messages will be from this user; if left blank the default System account will be used."
     send_welcome_message: "Send all new users a welcome private message with a quick start guide."
     suppress_reply_directly_below: "Don't show the expandable reply count on a post when there is only a single reply directly below this post."
     suppress_reply_directly_above: "Don't show the expandable in-reply-to on a post when there is only a single reply directly above this post."
@@ -768,6 +771,7 @@ en:
     sso_overrides_email: "Overrides local email with external site email from SSO payload (WARNING: discrepancies can occur due to normalization of local emails)"
     sso_overrides_username: "Overrides local username with external site username from SSO payload (WARNING: discrepancies can occur due to differences in username length/requirements)"
     sso_overrides_name: "Overrides local name with external site name from SSO payload (WARNING: discrepancies can occur due to normalization of local names)"
+    sso_overrides_avatar: "Overrides user avatar with external site avatar from SSO payload. If enabled, disabling allow_uploaded_avatars is highly recommended"
 
     enable_local_logins: "Enable local username and password login based accounts. (Note: this must be enabled for invites to work)"
     allow_new_registrations: "Allow new user registrations. Uncheck this to prevent anyone from creating a new account."
@@ -793,10 +797,11 @@ en:
     allow_restore: "Allow restore, which can replace ALL site data! Leave false unless you plan to restore a backup"
     maximum_backups: "The maximum amount of backups to keep on disk. Older backups are automatically deleted"
     backup_daily: "Automatically create a site backup once a day."
-    enable_s3_backups: "Upload backups to S3 when complete. Make sure you have filled in your s3 credentials."
+    enable_s3_backups: "Upload backups to S3 when complete. IMPORTANT: Requires valid S3 credentials entered in Files settings."
     s3_backup_bucket: "The remote bucket to hold backups. WARNING: Make sure it is a private bucket."
 
     active_user_rate_limit_secs: "How frequently we update the 'last_seen_at' field, in seconds"
+    verbose_localization: "Show extended localization tips in the UI"
     previous_visit_timeout_hours: "How long a visit lasts before we consider it the 'previous' visit, in hours"
 
     rate_limit_create_topic: "After creating a topic, users must wait (n) seconds before creating another topic."
@@ -820,6 +825,7 @@ en:
     purge_deleted_uploads_grace_period_days: "Grace period (in days) before a deleted upload is erased."
     purge_inactive_users_grace_period_days: "Grace period (in days) before an inactive user is deleted."
     enable_s3_uploads: "Place uploads on Amazon S3 storage."
+    s3_use_iam_profile: 'Use AWS EC2 IAM role to retrieve keys. NOTE: enabling will override "s3 access key id" and "s3 secret access key" settings.'
     s3_upload_bucket: "The Amazon S3 bucket name that files will be uploaded into. WARNING: must be lowercase, no periods."
     s3_access_key_id: "The Amazon S3 access key id that will be used to upload images."
     s3_secret_access_key: "The Amazon S3 secret access key that will be used to upload images."
@@ -842,15 +848,17 @@ en:
     regular_requires_likes_given: "How many likes a basic user must cast before promotion to regular (2) trust level."
     regular_requires_topic_reply_count: "How many topics a basic user must reply to before promotion to regular (2) trust level."
 
-    leader_requires_days_visited: "Minimum number of days that a user needs to have visited the site in the last 100 days to qualify for promotion to leader (3) trust level. (0 to 100)"
-    leader_requires_topics_replied_to: "Minimum number of topics a user needs to have replied to in the last 100 days to qualify for promotion to leader (3) trust level. (0 or higher)"
-    leader_requires_topics_viewed: "The percentage of topics created in the last 100 days that a user needs to have viewed to qualify for promotion to leader (3) trust level. (0 to 100)"
-    leader_requires_posts_read: "The percentage of posts created in the last 100 days that a user needs to have viewed to qualify for promotion to leader (3) trust level. (0 to 100)"
-    leader_requires_topics_viewed_all_time: "The minimum total number of topics a user must have viewed to qualify for leader (3) trust level."
-    leader_requires_posts_read_all_time: "The minimum total number of posts a user must have read to qualify for leader (3) trust level."
-    leader_requires_max_flagged: "User must not have had more than x posts flagged by x different users in the last 100 days to qualify for promotion to leader (3) trust level, where x is this setting's value. (0 or higher)"
-    leader_promotion_min_duration: "The minimum number of days that a promotion to leader lasts before a user can be demoted."
-    leader_links_no_follow: "Whether links from leaders have the nofollow attribute."
+    leader_requires_days_visited: "Minimum number of days that a user needs to have visited the site in the last 100 days to qualify for promotion to veteran (3) trust level. (0 to 100)"
+    leader_requires_topics_replied_to: "Minimum number of topics a user needs to have replied to in the last 100 days to qualify for promotion to veteran (3) trust level. (0 or higher)"
+    leader_requires_topics_viewed: "The percentage of topics created in the last 100 days that a user needs to have viewed to qualify for promotion to veteran (3) trust level. (0 to 100)"
+    leader_requires_posts_read: "The percentage of posts created in the last 100 days that a user needs to have viewed to qualify for promotion to veteran (3) trust level. (0 to 100)"
+    leader_requires_topics_viewed_all_time: "The minimum total number of topics a user must have viewed to qualify for veteran (3) trust level."
+    leader_requires_posts_read_all_time: "The minimum total number of posts a user must have read to qualify for veteran (3) trust level."
+    leader_requires_max_flagged: "User must not have had more than x posts flagged by x different users in the last 100 days to qualify for promotion to veteran (3) trust level, where x is this setting's value. (0 or higher)"
+    leader_promotion_min_duration: "The minimum number of days that a promotion to veteran lasts before a user can be demoted."
+    leader_requires_likes_given: "The minimum number of likes that must be given in the last 100 days to qualify for promotion to veteran (3) trust level."
+    leader_requires_likes_received: "The minimum number of likes that must be received in the last 100 days to qualify for promotion to veteran (3) trust level."
+    leader_links_no_follow: "Do not remove rel=nofollow from veteran links."
 
     min_trust_to_create_topic: "The minimum trust level required to create a new topic."
 
@@ -886,21 +894,21 @@ en:
 
     title_prettify: "Prevent common title typos and errors, including all caps, lowercase first character, multiple ! and ?, extra . at end, etc."
 
-    topic_views_heat_low: "After this many views, the topic is slightly highlighted."
-    topic_views_heat_medium: "After this many views, the topic is moderately highlighted."
-    topic_views_heat_high: "After this many views, the topic is strongly highlighted."
+    topic_views_heat_low: "After this many views, the views field is slightly highlighted."
+    topic_views_heat_medium: "After this many views, the views field is moderately highlighted."
+    topic_views_heat_high: "After this many views, the views field is strongly highlighted."
 
-    cold_age_days_low: "A topic this many days old is slightly highligted."
-    cold_age_days_medium: "A topic this many days old is moderately highligted."
-    cold_age_days_high: "A topic this many days old is strongly highligted."
+    cold_age_days_low: "After this many days of conversation, the last activity date is slightly highlighted."
+    cold_age_days_medium: "After this many days of conversation, the last activity date is moderately highlighted."
+    cold_age_days_high: "After this many days of conversation, the last activity date is strongly highlighted."
 
-    history_hours_low: "A post edited within this many hours is slightly highlighted"
-    history_hours_medium: "A topic with this likes:post ratio is moderately highlighted."
-    history_hours_high: "A topic with this likes:post ratio is strongly highlighted."
+    history_hours_low: "A post edited within this many hours has the edit indicator slightly highlighted"
+    history_hours_medium: "A post edited within this many hours has the edit indicator moderately highlighted."
+    history_hours_high: "A post edited within this many hours has the edit indicator strongly highlighted."
 
-    topic_post_like_heat_low: "A topic with this likes:post ratio is slightly highlighted."
-    topic_post_like_heat_medium: "A topic with this likes:post ratio is moderately highlighted."
-    topic_post_like_heat_high: "A topic with this likes:post ratio is strongly highlighted."
+    topic_post_like_heat_low: "After the likes:post ratio exceeds this ratio, the post count field is slightly highlighted."
+    topic_post_like_heat_medium: "After the likes:post ratio exceeds this ratio, the post count field is moderately highlighted."
+    topic_post_like_heat_high: "After the likes:post ratio exceeds this ratio, the post count field is strongly highlighted."
 
     faq_url: "If you have a FAQ hosted elsewhere that you want to use, provide the full URL here."
     tos_url: "If you have a Terms of Service document hosted elsewhere that you want to use, provide the full URL here."
@@ -916,13 +924,15 @@ en:
     reply_by_email_enabled: "Enable replying to topics via email."
     reply_by_email_address: "Template for reply by email incoming email address, for example: %{reply_key}@reply.example.com or replies+%{reply_key}@example.com"
 
-    pop3s_polling_enabled: "Poll via POP3S for email replies."
-    pop3s_polling_insecure: "Poll using plain text POP3 without SSL."
-    pop3s_polling_period_mins: "The period in minutes between checking the POP3S account for email. NOTE: requires restart."
-    pop3s_polling_port: "The port to poll a POP3S account on."
-    pop3s_polling_host: "The host to poll for email via POP3S."
-    pop3s_polling_username: "The username for the POP3S account to poll for email."
-    pop3s_polling_password: "The password for the POP3S account to poll for email."
+    disable_emails: "Prevent Discourse from sending any kind of emails"
+
+    pop3_polling_enabled: "Poll via POP3 for email replies."
+    pop3_polling_ssl: "Use SSL while connecting to the POP3 server. (Recommended)"
+    pop3_polling_period_mins: "The period in minutes between checking the POP3 account for email. NOTE: requires restart."
+    pop3_polling_port: "The port to poll a POP3 account on."
+    pop3_polling_host: "The host to poll for email via POP3."
+    pop3_polling_username: "The username for the POP3 account to poll for email."
+    pop3_polling_password: "The password for the POP3 account to poll for email."
     email_in: "Allow users to post new topics via email (requires pop3 polling). Configure the addresses in the \"Settings\" tab of each category."
     email_in_min_trust: "The minimum trust level a user needs to have to be allowed to post new topics via email."
     email_prefix: "The [label] used in the subject of emails. It will default to 'title' if not set."
@@ -1012,7 +1022,7 @@ en:
     invited_to_private_message: "%{display_username} invited you to a private message: %{link}"
     invitee_accepted: "%{display_username} accepted your invitation"
     linked: "%{display_username} linked you in %{link}"
-    granted_badge: "You were granted %{link}"
+    granted_badge: "You earned %{link}"
 
   search:
     within_post: "#%{post_number} by %{username}: %{excerpt}"
@@ -1027,8 +1037,8 @@ en:
   frequent_poster: "Frequent Poster"
 
   redirected_to_top_reasons:
-    new_user: "Welcome to our community! Here are our most popular recent topics."
-    not_seen_in_a_month: "Welcome back! We haven't seen you in a while. These are the top discussion topics since you've been away."
+    new_user: "Welcome to our community! These are the most popular recent topics."
+    not_seen_in_a_month: "Welcome back! We haven't seen you in a while. These are the most popular topics since you've been away."
 
   move_posts:
     new_topic_moderator_post:
@@ -1251,13 +1261,13 @@ en:
 
         Multiple community members flagged this post before it was hidden, so please consider how you might revise your post to reflect their feedback. **You can edit your post after %{edit_delay} minutes, and it will be automatically unhidden.** This will increase your trust level.
 
-        However, if the post is hidden by the community a second time, the moderators will be notified – and there may be further action, including the possible suspension of your account.
+        However, if the post is hidden by the community a second time, it will remain hidden until handled by staff – and there may be further action, including the possible suspension of your account.
 
         For additional guidance, please refer to our [community guidelines](%{base_url}/guidelines).
 
     usage_tips:
       text_body_template: |
-        This private message has a few quick tips to get you started:
+        This private message has a few quick tips to get you started.
 
         ## Keep scrolling
 
@@ -1269,11 +1279,13 @@ en:
 
         - For search, your user page, or the menu, use the **icon buttons at the upper right**.
 
-        - While reading a topic, move back to the top &uarr; by clicking the topic title. Click the green progress bar at the bottom right to see full navigation controls, or use the <kbd>home</kbd> and <kbd>end</kbd> keys.
+        - In a list of topics, the title will always take you to your next unread post. Use the last activity time to jump to the last post.
+
+        - While reading a topic, jump to the top &uarr; by selecting the topic title. Select the green progress bar at the bottom right for full navigation controls, or use the <kbd>home</kbd> and <kbd>end</kbd> keys.
 
             <img src="http://www.discourse.org/images/welcome/progress-bar.png" width="190" height="52">
 
-        - The topic title will always take you to your last read post. Use times as entry shortcuts. Enter at the top via the first post date, and the bottom via the last post date.
+
 
         ## How do I reply?
 
@@ -1281,7 +1293,7 @@ en:
 
         - To reply to a specific post, use the Reply button <img src="http://www.discourse.org/images/welcome/reply-post.png" width="29" height="25"> on that post.
 
-        - To take the conversation in a different direction, but keep them linked together, use Reply as New Topic <img src="http://www.discourse.org/images/welcome/reply-as-new-topic.png" width="33" height="25">   to the right of the post.
+        - To take the conversation in a different direction, but keep them linked together, use Reply as New Topic <img src="http://www.discourse.org/images/welcome/reply-as-new-topic.png" width="33" height="25"> to the right of the post.
 
         To quote someone in your reply, select the text you wish to quote, then press any Reply button.
 
@@ -1289,17 +1301,22 @@ en:
 
         (To quote an entire post, use the Import Quote button on the editor toolbar.)
 
-        To mention someone's name in your reply, start typing `@` and an autocompleter will pop up.
+        To ping someone in your reply, mention their name. Type `@` and an autocompleter will pop up.
 
         <img src="http://www.discourse.org/images/welcome/username-completion.png" width="307" height="174">
+
+        For [standard Emoji](http://www.emoji-cheat-sheet.com/), just start typing `:` or the traditional smileys `:)` :smile:
 
         ## What else can I do?
 
         <img src="http://www.discourse.org/images/welcome/like-link-flag-bookmark.png" width="225" height="61">
 
-        To let someone know that you enjoyed their post, use the **like** button at the bottom of the post. If you see a problem with a post, don't hesitate to use the **flag** button and privately let them, or our staff, know about it.
+        There are action buttons at the bottom of each post.
 
-        You can also share a link to a post, or bookmark a post for later reference on your user page.
+        To let someone know that you enjoyed their post, use the **like** button. If you see a problem with a post, privately let them, or our staff, know about it with the **flag** button.
+
+        You can also **share** a link to a post, or **bookmark** it for later reference on your user page.
+
 
         ## Who is talking to me?
 
@@ -1311,7 +1328,7 @@ en:
 
         ## When are conversations new?
 
-        By default all conversations less than two days old are considered new, and any conversation you've participated in will automatically be tracked.
+        By default all conversations less than two days old are considered new, and any conversation you've participated in (replied to, created, or read for an extended period) will automatically be tracked.
 
         You will see the blue new and number indicators next to these topics:
 
@@ -1466,6 +1483,13 @@ en:
         We're sorry, but your email message to %{destination} (titled %{former_title}) didn't work.
 
         The provided reply key is invalid or unknown, so we don't know what this email is in reply to. Contact a staff member.
+
+    email_reject_destination:
+      subject_template: "Email issue -- Bad Destination Address(es)"
+      text_body_template: |
+        We're sorry, but your email message to %{destination} (titled %{former_title}) didn't work.
+
+        None of the destination addresses are recognized by the forum. Please make sure that the forum is in the To: line (not CC or BCC), and that you are sending to the email address provided by the forum administrators.
 
     email_error_notification:
       subject_template: "Email issue -- POP authentication error"
