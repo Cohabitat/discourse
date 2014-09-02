@@ -12,8 +12,7 @@ export function filterQueryParams(params, defaultParams) {
   return findOpts;
 }
 
-export default function(filter, extras) {
-  extras = extras || {};
+export default function(filter) {
   return Discourse.Route.extend({
     queryParams: queryParams,
 
@@ -36,8 +35,7 @@ export default function(filter, extras) {
         return 'queryParams.' + v;
       })));
 
-      var periods = this.controllerFor('discovery').get('periods'),
-          periodId = model.get('for_period') || (filter.indexOf('/') > 0 ? filter.split('/')[1] : ''),
+      var period = filter.indexOf('/') > 0 ? filter.split('/')[1] : '',
           filterText = I18n.t('filters.' + filter.replace('/', '.') + '.title', {count: 0});
 
       if (filter === Discourse.Utilities.defaultHomepage()) {
@@ -49,7 +47,7 @@ export default function(filter, extras) {
       this.controllerFor('discovery/topics').setProperties({
         model: model,
         category: null,
-        period: periods.findBy('id', periodId),
+        period: period,
         selected: []
       });
 
@@ -62,6 +60,6 @@ export default function(filter, extras) {
       this.render('navigation/default', { outlet: 'navigation-bar' });
       this.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
     }
-  }, extras);
+  });
 }
 

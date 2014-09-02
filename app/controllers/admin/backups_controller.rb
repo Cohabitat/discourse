@@ -23,11 +23,7 @@ class Admin::BackupsController < Admin::AdminController
   end
 
   def create
-    opts = {
-      publish_to_message_bus: true,
-      with_uploads: params.fetch(:with_uploads) == "true"
-    }
-    BackupRestore.backup!(current_user.id, opts)
+    BackupRestore.backup!(current_user.id, true)
   rescue BackupRestore::OperationRunningError
     render json: failed_json.merge(message: I18n.t("backup.operation_already_running"))
   else

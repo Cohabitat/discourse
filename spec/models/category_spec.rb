@@ -148,10 +148,6 @@ describe Category do
     Fabricate(:category, name: "  blanks ").name.should == "blanks"
   end
 
-  it "sets name_lower" do
-    Fabricate(:category, name: "Not MySQL").name_lower.should == "not mysql"
-  end
-
   it "has custom fields" do
     category = Fabricate(:category, name: " music")
     category.custom_fields["a"].should == nil
@@ -378,26 +374,6 @@ describe Category do
         @category.posts_year.should == 1
         @category.posts_month.should == 1
         @category.posts_week.should == 1
-      end
-    end
-
-    context 'for uncategorized category' do
-      before do
-        @uncategorized = Category.find(SiteSetting.uncategorized_category_id)
-        create_post(user: Fabricate(:user), category: @uncategorized.name)
-        Category.update_stats
-        @uncategorized.reload
-      end
-
-      it 'updates topic stats' do
-        @uncategorized.topics_week.should == 1
-        @uncategorized.topics_month.should == 1
-        @uncategorized.topics_year.should == 1
-        @uncategorized.topic_count.should == 1
-        @uncategorized.post_count.should == 1
-        @uncategorized.posts_year.should == 1
-        @uncategorized.posts_month.should == 1
-        @uncategorized.posts_week.should == 1
       end
     end
   end

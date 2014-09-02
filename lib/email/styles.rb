@@ -4,15 +4,10 @@
 #
 module Email
   class Styles
-    @@plugin_callbacks = []
 
     def initialize(html)
       @html = html
       @fragment = Nokogiri::HTML.fragment(@html)
-    end
-
-    def self.register_plugin_style(&block)
-      @@plugin_callbacks.push(block)
     end
 
     def add_styles(node, new_styles)
@@ -58,7 +53,6 @@ module Email
       style('.user-avatar', 'vertical-align:top;width:55px;')
       style('.user-avatar img', nil, width: '45', height: '45')
       style('hr', 'background-color: #ddd; height: 1px; border: 1px;')
-      style('.rtl', 'direction: rtl;')
       # we can do this but it does not look right
       # style('#main', 'font-family:"Helvetica Neue", Helvetica, Arial, sans-serif')
       style('td.body', 'padding-top:5px;', colspan: "2")
@@ -66,7 +60,6 @@ module Email
       correct_footer_style
       reset_tables
       onebox_styles
-      plugin_styles
     end
 
     def onebox_styles
@@ -120,12 +113,6 @@ module Email
       style('.featured-topic a', 'text-decoration: none; font-weight: bold; color: #006699; margin-right: 5px')
 
       onebox_styles
-      plugin_styles
-    end
-
-    # this method is reserved for styles specific to plugin
-    def plugin_styles
-      @@plugin_callbacks.each { |block| block.call(@fragment) }
     end
 
     def to_html

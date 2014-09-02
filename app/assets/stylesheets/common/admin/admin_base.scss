@@ -284,11 +284,11 @@ td.flaggers td {
 
 section.details {
   h1 {
-    font-size: 18px;
-    color: $primary;
-    padding: 5px 10px;
-    margin: 30px 0 5px 0;
-    border-bottom: 5px solid scale-color-diff();
+    font-size: 15px;
+    background-color: scale-color-diff();
+    color: $secondary;
+    padding: 0 10px;
+    margin: 0 0 5px 0;
   }
 }
 
@@ -299,12 +299,6 @@ section.details {
   position: fixed;
   bottom: 0;
   width: 1075px;
-}
-
-.user-controls {
-  padding: 5px;
-  clear: both;
-  text-align: right;
 }
 
 .display-row {
@@ -510,7 +504,6 @@ section.details {
   .user {
     width: 20px;
     padding: 8px 0 0 0;
-    text-align: center;
   }
   .excerpt {
     max-width: 700px;
@@ -1167,15 +1160,6 @@ button.ru {
     display: block;
     margin: 10px 0 10px 10px;
     padding: 10px 15px;
-  }
-}
-
-.start-backup-modal {
-  .btn {
-    margin: 10px 0 10px 5px;
-  }
-  .btn:first-of-type {
-    margin-left: 10px;
   }
 }
 

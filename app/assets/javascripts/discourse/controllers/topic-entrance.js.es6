@@ -1,45 +1,28 @@
-function entranceDate(dt, showTime) {
-  var today = new Date();
+function entranceDate(dt) {
+  var bumpedAt = new Date(dt),
+      today = new Date();
 
-  if (dt.toDateString() === today.toDateString()) {
-    return moment(dt).format(I18n.t("dates.time"));
+  if (bumpedAt.getDate() === today.getDate()) {
+    return moment(bumpedAt).format(I18n.t("dates.time"));
   }
 
-  if (dt.getYear() === today.getYear()) {
-    // No year
-    return moment(dt).format(
-      showTime ? I18n.t("dates.long_date_without_year_with_linebreak") : I18n.t("dates.long_no_year_no_time")
-    );
+  if (bumpedAt.getYear() === today.getYear()) {
+    return moment(bumpedAt).format(I18n.t("dates.long_no_year"));
   }
 
-  return moment(dt).format(
-    showTime ? I18n.t('dates.long_date_with_year_with_linebreak') : I18n.t('dates.long_date_with_year_without_time')
-  );
+  return moment(bumpedAt).format(I18n.t('dates.long_with_year'));
 }
 
 export default Ember.ObjectController.extend({
   position: null,
 
-  createdDate: function() {
-    return new Date(this.get('model.created_at'));
+  topDate: function() {
+    return entranceDate(this.get('created_at'));
   }.property('model.created_at'),
 
-  bumpedDate: function() {
-    return new Date(this.get('model.bumped_at'));
-  }.property('model.bumped_at'),
-
-  showTime: function() {
-    var diffMs = this.get('bumpedDate').getTime() - this.get('createdDate').getTime();
-    return diffMs < (1000 * 60 * 60 * 24 * 2);
-  }.property('createdDate', 'bumpedDate'),
-
-  topDate: function() {
-    return entranceDate(this.get('createdDate'), this.get('showTime'));
-  }.property('createdDate'),
-
   bottomDate: function() {
-    return entranceDate(this.get('bumpedDate'), this.get('showTime'));
-  }.property('bumpedDate'),
+    return entranceDate(this.get('bumped_at'));
+  }.property('model.bumped_at'),
 
   actions: {
     show: function(data) {

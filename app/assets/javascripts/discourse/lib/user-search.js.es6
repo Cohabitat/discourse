@@ -3,37 +3,29 @@ import { CANCELLED_STATUS } from 'discourse/lib/autocomplete';
 var cache = {},
     cacheTopicId,
     cacheTime,
-    currentTerm,
-    oldSearch;
+    currentTerm;
 
 function performSearch(term, topicId, includeGroups, resultsFn) {
   var cached = cache[term];
   if (cached) {
     resultsFn(cached);
-    return;
+    return true;
   }
 
-  // need to be able to cancel this
-  oldSearch = $.ajax(Discourse.getURL('/users/search/users'), {
+  Discourse.ajax('/users/search/users', {
     data: { term: term,
             topic_id: topicId,
             include_groups: includeGroups }
-  });
-
-  var returnVal = CANCELLED_STATUS;
-
-  oldSearch.then(function (r) {
+  }).then(function (r) {
     cache[term] = r;
     cacheTime = new Date();
+
     // If there is a newer search term, return null
-    if (term === currentTerm) { returnVal = r; }
-
-  }).always(function(){
-    oldSearch = null;
-    resultsFn(returnVal);
+    if (term !== currentTerm) { r = CANCELLED_STATUS; }
+    resultsFn(r);
   });
+  return true;
 }
-
 var debouncedSearch = _.debounce(performSearch, 300);
 
 function organizeResults(r, options) {
@@ -45,26 +37,22 @@ function organizeResults(r, options) {
       groups = [],
       results = [];
 
-  if (r.users) {
-    r.users.every(function(u) {
-      if (exclude.indexOf(u.username) === -1) {
-        users.push(u);
-        results.push(u);
-      }
-      return results.length <= limit;
-    });
-  }
+  r.users.every(function(u) {
+    if (exclude.indexOf(u.username) === -1) {
+      users.push(u);
+      results.push(u);
+    }
+    return results.length <= limit;
+  });
 
-  if (r.groups) {
-    r.groups.every(function(g) {
-      if (results.length > limit) return false;
-      if (exclude.indexOf(g.name) === -1) {
-        groups.push(g);
-        results.push(g);
-      }
-      return true;
-    });
-  }
+  r.groups.every(function(g) {
+    if (results.length > limit) return false;
+    if (exclude.indexOf(g.name) === -1) {
+      groups.push(g);
+      results.push(g);
+    }
+    return true;
+  });
 
   results.users = users;
   results.groups = groups;
@@ -76,12 +64,6 @@ export default function userSearch(options) {
   var term = options.term || "",
       includeGroups = !!options.include_groups,
       topicId = options.topicId;
-
-
-  if (oldSearch) {
-    oldSearch.abort();
-    oldSearch = null;
-  }
 
   currentTerm = term;
 
@@ -96,15 +78,14 @@ export default function userSearch(options) {
     }
 
     cacheTopicId = topicId;
-
-    var clearPromise = setTimeout(function(){
-      resolve(CANCELLED_STATUS);
-    }, 5000);
-
-    debouncedSearch(term, topicId, includeGroups, function(r) {
-      clearTimeout(clearPromise);
+    var executed = debouncedSearch(term, topicId, includeGroups, function(r) {
       resolve(organizeResults(r, options));
     });
 
+    // TODO: This doesn't cancel all debounced promises, we should figure out
+    // a way to handle that.
+    if (!executed) {
+      resolve(CANCELLED_STATUS);
+    }
   });
 }

@@ -67,7 +67,7 @@ Fabricator(:active_user, from: :user) do
 end
 
 Fabricator(:leader, from: :user) do
-  name 'Veteran McVeteranish'
+  name 'Leader McLeaderman'
   username { sequence(:username) { |i| "leader#{i}" } }
   email { sequence(:email) { |i| "leader#{i}@leaderfun.com" } }
   trust_level TrustLevel.levels[:leader]

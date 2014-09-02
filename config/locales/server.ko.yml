@@ -191,8 +191,10 @@ ko:
   vip_category_name: "라운지"
   vip_category_description: "신뢰 등급 3 혹은 그 이상의 회원만 입장가능한 카테고리"
   meta_category_name: "메타"
+  meta_category_description: "이 포럼 자체에 대한 논의를 하는 곳입니다."
   staff_category_name: "스태프"
   staff_category_description: "스태프들의 논의를 위한 비공개 카테고리입니다. 관리자 및 운영자에게만 보입니다."
+  assets_topic_body: "This is a permanent topic, visible only to staff, for storing images and files used in the forum design. Don't delete it!\n\nHere's how:\n\n1. Reply to this topic.\n2. Upload all the images you wish to use for logos, favicons, and so forth here. (Use the upload toolbar icon in the post editor, or drag-and-drop or paste images.)\n3. Submit your reply to post it.\n4. Right click the images in your new post to get the path to the uploaded images, or click the edit icon to edit your post and retrieve the path to the images. Copy the image paths.\n5. Paste those image paths into [basic settings](/admin/site_settings/category/required).\n\n\nAlso, if you need to enable different file type uploads, edit `authorized_extensions` in the [file settings](/admin/site_settings/category/files)."
   lounge_welcome:
     title: "라운지에 오신 것을 환영합니다."
     body: |2
@@ -374,6 +376,7 @@ ko:
       long_form: '운영자에게 알림'
   flagging:
     you_must_edit: '<p>회원님의 포스트가 신고접수 되었습니다. <a href="/my/private-messages">개인 메시지</a>를 확인해주세요.</p>'
+    user_must_edit: '<p>신고 접수된 글은 보이지 않습니다.</p>'
   archetypes:
     regular:
       title: "자주보는 토픽"
@@ -666,6 +669,7 @@ ko:
     allow_restore: "데이터 복원을 허용한다. 이 사이트의 모든 데이터가 변경될 수 있다. 백업이나 복원 계획이 없다면 비활성화로 놔둔다."
     maximum_backups: "디스크에 유지할 최대 백업 개수. 오래된 백업순으로 자동으로 삭제된다."
     backup_daily: "하루에 한 번 자동으로 백업한다."
+    enable_s3_backups: "백업이 완료되면 Amazon S3로 업로드한다. s3 credentials을 기입되어있는지 확인해야한다."
     s3_backup_bucket: "백업본을 유지할 s3 버켓 이름. 주의 : 프라이빗 버켓인지 확인해야한다."
     active_user_rate_limit_secs: "'last_seen_at'을 업데이트 하는 주기(초)"
     previous_visit_timeout_hours: "최근 방문한 시간을 저장할 주기(시간)"
@@ -736,6 +740,9 @@ ko:
     authorized_extensions: "파일 업로드에 허용되는 확장자 리스트 '*'을 사용하면 모든 타입의 파일이 가능하다."
     max_similar_results: "새로운 토픽을 작성할 때, 에디터 위에 보여줄 비슷한 토픽들의 개수. 제목과 본문을 바탕으로 비교한다."
     title_prettify: "일반적인 제목의 오타 및 오류를 수정해준다. 모두 대문자로 쓰거나, 첫자가 소문자이거나(영문), 복수의 !, ? 혹은 마침표(.)가 중복으로 들어간 것 등"
+    topic_views_heat_low: "토픽이 연하게 하이라이트 되기 위한 조회수"
+    topic_views_heat_medium: "토픽이 적당하게 하이라이트 되기 위한 조회수"
+    topic_views_heat_high: "토픽이 진하게 하이라이트 되기 위한 조회수"
     faq_url: "FAQ주소가 있으면 전체 URL을 적어주세요."
     tos_url: "이용약관이 있으면 전체 URL을 적어주세요."
     privacy_policy_url: "개인정보 보호가 있으면 전체 URL을 적어주세요."
@@ -814,6 +821,9 @@ ko:
   most_posts: "최대 게시자"
   most_recent_poster: "최근 게시자"
   frequent_poster: "빈번한 게시자"
+  redirected_to_top_reasons:
+    new_user: "우리 커뮤니티에 오신 것을 환영합니다! 여기 최근에 가장 인기있는 토픽들이 있습니다."
+    not_seen_in_a_month: "다시 돌아오신 것을 환용합니다! 잠시 떠나신 동안 가장 인기 있는 토픽들입니다."
   move_posts:
     new_topic_moderator_post:
       other: "%{count}개의 글을 새 토픽으로 옮겼습니다: %{topic_link}"

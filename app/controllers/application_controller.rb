@@ -212,14 +212,11 @@ class ApplicationController < ActionController::Base
     Middleware::AnonymousCache.anon_cache(request.env, time_length)
   end
 
-  def fetch_user_from_params(opts=nil)
-    opts ||= {}
+  def fetch_user_from_params
     user = if params[:username]
       username_lower = params[:username].downcase
       username_lower.gsub!(/\.json$/, '')
-      find_opts = {username_lower: username_lower}
-      find_opts[:active] = true unless opts[:include_inactive]
-      User.find_by(find_opts)
+      User.find_by(username_lower: username_lower, active: true)
     elsif params[:external_id]
       SingleSignOnRecord.find_by(external_id: params[:external_id]).try(:user)
     end

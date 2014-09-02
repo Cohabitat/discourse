@@ -14,9 +14,7 @@
     <%= raw(t 'user_notifications.digest.why', site_link: html_site_link, last_seen_at: @last_seen_at) %>
 
     <%- if @featured_topics.present? %>
-      <hr/>
       <h3><%=t 'user_notifications.digest.top_topics' %></h3>
-
 
       <%- @featured_topics.each_with_index do |t, i| %>
         <div class='featured-topic'>
@@ -30,13 +28,12 @@
           </div>
         <%- end %>
 
-        <%- if i < @featured_topics.size - 1 %><% end %>
+        <%- if i < @featured_topics.size - 1 %><hr><% end %>
 
       <%- end %>
     <%- end %>
 
     <%- if @new_topics.present? %>
-      <hr/>
       <h3><%=t 'user_notifications.digest.other_new_topics' %></h3>
 
       <%- @new_topics.each do |t| %>
@@ -64,7 +61,6 @@
       <%- end %>
     <%- end -%>
 
-  <hr/>
   <span class='footer-notice'>
     <%=raw(t :'user_notifications.digest.unsubscribe',
        site_link: html_site_link,

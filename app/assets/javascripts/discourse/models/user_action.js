@@ -193,7 +193,7 @@ Discourse.UserAction = Discourse.Model.extend({
 Discourse.UserAction.reopenClass({
   collapseStream: function(stream) {
     var uniq = {},
-        collapsed = [],
+        collapsed = Em.A(),
         pos = 0;
 
     stream.forEach(function(item) {

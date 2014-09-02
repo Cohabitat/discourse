@@ -9,6 +9,8 @@ class S3RegionSiteSetting < EnumSiteSetting
     @values ||= valid_values.sort.map {|x| {name: x, value: x} }
   end
 
+  private
+
   def self.valid_values
     [ '',
       'us-east-1',

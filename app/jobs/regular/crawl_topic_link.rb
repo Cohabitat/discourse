@@ -9,7 +9,7 @@ module Jobs
 
     # Retrieve a header regardless of case sensitivity
     def self.header_for(head, name)
-      header = head.headers.detect do |k, _|
+      header = head.headers.detect do |k, v|
         name == k.downcase
       end
       header[1] if header
@@ -65,7 +65,7 @@ module Jobs
       return "" unless uri
 
       result = ""
-      streamer = lambda do |chunk, _, _|
+      streamer = lambda do |chunk, remaining_bytes, total_bytes|
         result << chunk
 
         # Using exceptions for flow control is really bad, but there really seems to

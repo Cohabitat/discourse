@@ -62,8 +62,7 @@ export default function(filter, params) {
 
     setupController: function(controller, model) {
       var topics = this.get('topics'),
-          periods = this.controllerFor('discovery').get('periods'),
-          periodId = topics.get('for_period') || (filter.indexOf('/') > 0 ? filter.split('/')[1] : ''),
+          period = filter.indexOf('/') > 0 ? filter.split('/')[1] : '',
           filterText = I18n.t('filters.' + filter.replace('/', '.') + '.title', {count: 0});
 
       Discourse.set('title', I18n.t('filters.with_category', { filter: filterText, category: model.get('name') }));
@@ -72,7 +71,7 @@ export default function(filter, params) {
       this.controllerFor('discovery/topics').setProperties({
         model: topics,
         category: model,
-        period: periods.findBy('id', periodId),
+        period: period,
         selected: [],
         noSubcategories: params && !!params.no_subcategories
       });

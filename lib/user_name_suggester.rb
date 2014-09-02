@@ -6,6 +6,8 @@ module UserNameSuggester
     find_available_username_based_on(name)
   end
 
+  private
+
   def self.parse_name_from_email(name)
     if name =~ User::EMAIL
       # When 'walter@white.com' take 'walter'
@@ -17,7 +19,7 @@ module UserNameSuggester
   end
 
   def self.find_available_username_based_on(name)
-    name = fix_username(name)
+    name = rightsize_username(sanitize_username!(name))
     i = 1
     attempt = name
     until User.username_available?(attempt)
@@ -29,15 +31,11 @@ module UserNameSuggester
     attempt
   end
 
-  def self.fix_username(name)
-    rightsize_username(sanitize_username(name))
-  end
-
-  def self.sanitize_username(name)
+  def self.sanitize_username!(name)
     name = ActiveSupport::Inflector.transliterate(name)
-    name = name.gsub(/^[^[:alnum:]]+|\W+$/, "")
-               .gsub(/\W+/, "_")
-               .gsub(/^\_+/, '')
+    name.gsub!(/^[^[:alnum:]]+|\W+$/, "")
+    name.gsub!(/\W+/, "_")
+    name.gsub!(/^\_+/, '')
     name
   end
 

@@ -66,9 +66,9 @@ describe Admin::BackupsController do
     describe ".create" do
 
       it "starts a backup" do
-        BackupRestore.expects(:backup!).with(@admin.id, { publish_to_message_bus: true, with_uploads: false })
+        BackupRestore.expects(:backup!).with(@admin.id, true)
 
-        xhr :post, :create, { with_uploads: false }
+        xhr :post, :create
 
         response.should be_success
       end

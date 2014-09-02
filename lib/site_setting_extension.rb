@@ -105,7 +105,7 @@ module SiteSettingExtension
 
   def settings_hash
     result = {}
-    @defaults.each do |s, _|
+    @defaults.each do |s, v|
       result[s] = send(s).to_s
     end
     result
@@ -124,14 +124,14 @@ module SiteSettingExtension
   # Retrieve all settings
   def all_settings(include_hidden=false)
     @defaults
-      .reject{|s, _| hidden_settings.include?(s) || include_hidden}
+      .reject{|s, v| hidden_settings.include?(s) || include_hidden}
       .map do |s, v|
         value = send(s)
         type = types[get_data_type(s, value)]
         opts = {
           setting: s,
           description: description(s),
-          default: v.to_s,
+          default: v,
           type: type.to_s,
           value: value.to_s,
           category: categories[s]
@@ -328,8 +328,6 @@ module SiteSettingExtension
 
   def convert(value, type)
     case type
-    when types[:float]
-      value.to_f
     when types[:fixnum]
       value.to_i
     when types[:string], types[:list], types[:enum]

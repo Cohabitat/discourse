@@ -21,7 +21,6 @@ class PostRevisor
     @opts = opts
     @new_raw = TextCleaner.normalize_whitespaces(new_raw).strip
 
-    # TODO this is not in a transaction - dangerous!
     return false unless should_revise?
     @post.acting_user = @editor
     revise_post
@@ -31,13 +30,24 @@ class PostRevisor
     update_topic_word_counts
     @post.advance_draft_sequence
     PostAlerter.new.after_save_post(@post)
-    @post.publish_change_to_clients! :revised
+    publish_revision
     BadgeGranter.queue_badge_grant(Badge::Trigger::PostRevision, post: @post)
 
     true
   end
 
   private
+
+  def publish_revision
+    MessageBus.publish("/topic/#{@post.topic_id}",{
+                    id: @post.id,
+                    post_number: @post.post_number,
+                    updated_at: @post.updated_at,
+                    type: "revised"
+                  },
+                  group_ids: @post.topic.secure_group_ids
+    )
+  end
 
   def should_revise?
     @post.raw != @new_raw || @opts[:changed_owner]

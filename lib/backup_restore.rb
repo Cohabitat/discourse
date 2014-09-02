@@ -9,12 +9,14 @@ module BackupRestore
   METADATA_FILE = "meta.json"
   LOGS_CHANNEL = "/admin/backups/logs"
 
-  def self.backup!(user_id, opts={})
-    start! Export::Exporter.new(user_id, opts)
+  def self.backup!(user_id, publish_to_message_bus = false)
+    exporter = Export::Exporter.new(user_id, publish_to_message_bus)
+    start! exporter
   end
 
-  def self.restore!(user_id, filename, publish_to_message_bus=false)
-    start! Import::Importer.new(user_id, filename, publish_to_message_bus)
+  def self.restore!(user_id, filename, publish_to_message_bus = false)
+    importer = Import::Importer.new(user_id, filename, publish_to_message_bus)
+    start! importer
   end
 
   def self.rollback!
@@ -31,7 +33,8 @@ module BackupRestore
   end
 
   def self.mark_as_running!
-    $redis.setex(running_key, 60, "1")
+    # TODO: for extra safety, it should acquire a lock and raise an exception if already running
+    $redis.set(running_key, "1")
     save_start_logs_message_id
     keep_it_running
   end
@@ -56,7 +59,6 @@ module BackupRestore
     {
       is_operation_running: is_operation_running?,
       can_rollback: can_rollback?,
-      allow_restore: Rails.env.development? || SiteSetting.allow_restore
     }
   end
 

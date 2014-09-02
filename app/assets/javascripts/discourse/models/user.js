@@ -81,11 +81,11 @@ Discourse.User = Discourse.Model.extend({
 
     if(this.get('admin')) {
       desc = I18n.t('user.admin', {user: name});
-      return '<i class="fa fa-shield" title="' + desc +  '" alt="' + desc + '"></i>';
+      return '<i class="fa fa-trophy" title="' + desc +  '" alt="' + desc + '"></i>';
     }
     if(this.get('moderator')){
       desc = I18n.t('user.moderator', {user: name});
-      return '<i class="fa fa-shield" title="' + desc +  '" alt="' + desc + '"></i>';
+      return '<i class="fa fa-magic" title="' + desc +  '" alt="' + desc + '"></i>';
     }
     return null;
   }.property('admin','moderator'),
@@ -256,10 +256,9 @@ Discourse.User = Discourse.Model.extend({
     var self = this,
         stream = this.get('stream');
     return Discourse.ajax("/user_actions/" + id + ".json", { cache: 'false' }).then(function(result) {
-      if (result && result.user_action) {
-        var ua = result.user_action;
-        if ((self.get('stream.filter') || ua.action_type) !== ua.action_type) return;
-        var action = Discourse.UserAction.collapseStream([Discourse.UserAction.create(ua)]);
+      if (result) {
+        if ((self.get('stream.filter') || result.action_type) !== result.action_type) return;
+        var action = Discourse.UserAction.collapseStream([Discourse.UserAction.create(result)]);
         stream.set('itemsLoaded', stream.get('itemsLoaded') + 1);
         stream.get('content').insertAt(0, action[0]);
       }

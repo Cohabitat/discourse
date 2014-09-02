@@ -270,7 +270,14 @@ class PostCreator
     return if @opts[:import_mode]
     return unless @post.post_number > 1
 
-    @post.publish_change_to_clients! :created
+    MessageBus.publish("/topic/#{@post.topic_id}",{
+                    id: @post.id,
+                    created_at: @post.created_at,
+                    user: BasicUserSerializer.new(@post.user).as_json(root: false),
+                    post_number: @post.post_number
+                  },
+                  group_ids: @topic.secure_group_ids
+    )
   end
 
   def extract_links
@@ -281,8 +288,8 @@ class PostCreator
   def track_topic
     return if @opts[:auto_track] == false
 
-    TopicUser.change(@post.user_id,
-                     @topic.id,
+    TopicUser.change(@post.user.id,
+                     @post.topic.id,
                      posted: true,
                      last_read_post_number: @post.post_number,
                      seen_post_count: @post.post_number)

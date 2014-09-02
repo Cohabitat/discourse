@@ -32,7 +32,6 @@ class Category < ActiveRecord::Base
   before_validation :ensure_slug
   before_save :apply_permissions
   before_save :downcase_email
-  before_save :downcase_name
   after_create :create_category_definition
   after_create :publish_categories_list
   after_destroy :publish_categories_list
@@ -133,8 +132,7 @@ SQL
     # If you refactor this, test performance on a large database.
 
     Category.all.each do |c|
-      topics = c.topics.visible
-      topics = topics.where(['topics.id <> ?', c.topic_id]) if c.topic_id
+      topics = c.topics.where(['topics.id <> ?', c.topic_id]).visible
       c.topics_year  = topics.created_since(1.year.ago).count
       c.topics_month = topics.created_since(1.month.ago).count
       c.topics_week  = topics.created_since(1.week.ago).count
@@ -256,10 +254,6 @@ SQL
     self.email_in = email_in.downcase if self.email_in
   end
 
-  def downcase_name
-    self.name_lower = name.downcase if self.name
-  end
-
   def secure_group_ids
     if self.read_restricted?
       groups.pluck("groups.id")
@@ -362,8 +356,8 @@ end
 #  color                    :string(6)        default("AB9364"), not null
 #  topic_id                 :integer
 #  topic_count              :integer          default(0), not null
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
+#  created_at               :datetime
+#  updated_at               :datetime
 #  user_id                  :integer          not null
 #  topics_year              :integer          default(0)
 #  topics_month             :integer          default(0)
@@ -388,7 +382,6 @@ end
 #  logo_url                 :string(255)
 #  background_url           :string(255)
 #  allow_badges             :boolean          default(TRUE), not null
-#  name_lower               :string(50)       not null
 #
 # Indexes
 #

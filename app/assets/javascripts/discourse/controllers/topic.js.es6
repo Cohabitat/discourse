@@ -144,10 +144,6 @@ export default ObjectController.extend(Discourse.SelectedPostsCount, {
     },
 
     editPost: function(post) {
-      if (!Discourse.User.current()) {
-        return bootbox.alert(I18n.t('post.controls.edit_anonymous'));
-      }
-
       this.get('controllers.composer').open({
         post: post,
         action: Discourse.Composer.EDIT,
@@ -337,6 +333,17 @@ export default ObjectController.extend(Discourse.SelectedPostsCount, {
       this.get('content').clearPin();
     },
 
+    resetRead: function() {
+      Discourse.ScreenTrack.current().reset();
+      this.unsubscribe();
+
+      var topicController = this;
+      this.get('model').resetRead().then(function() {
+        topicController.set('message', I18n.t("topic.read_position_reset"));
+        topicController.set('postStream.loaded', false);
+      });
+    },
+
     replyAsNewTopic: function(post) {
       var composerController = this.get('controllers.composer'),
           quoteController = this.get('controllers.quote-button'),
@@ -496,30 +503,25 @@ export default ObjectController.extend(Discourse.SelectedPostsCount, {
       }
 
       var postStream = topicController.get('postStream');
-      if (data.type === "revised" || data.type === "acted") {
+      if (data.type === "revised" || data.type === "acted"){
         // TODO we could update less data for "acted"
         // (only post actions)
         postStream.triggerChangedPost(data.id, data.updated_at);
         return;
       }
 
-      if (data.type === "deleted") {
+      if (data.type === "deleted"){
         postStream.triggerDeletedPost(data.id, data.post_number);
         return;
       }
 
-      if (data.type === "recovered") {
+      if (data.type === "recovered"){
         postStream.triggerRecoveredPost(data.id, data.post_number);
         return;
       }
 
-      if (data.type === "created") {
-        postStream.triggerNewPostInStream(data.id);
-        return;
-      }
-
-      // log a warning
-      Em.Logger.warn("unknown topic bus message type", data);
+      // Add the new post into the stream
+      postStream.triggerNewPostInStream(data.id);
     });
   },
 
@@ -627,9 +629,10 @@ export default ObjectController.extend(Discourse.SelectedPostsCount, {
     if (!post) { return; }
 
     var postStream = this.get('postStream'),
-        lastLoadedPost = postStream.get('lastLoadedPost');
+        lastLoadedPost = postStream.get('lastLoadedPost'),
+        index = postStream.get('stream').indexOf(post.get('id'))+1;
 
-    this.set('controllers.topic-progress.progressPosition', postStream.progressIndexOfPost(post));
+    this.set('controllers.topic-progress.progressPosition', index);
 
     if (lastLoadedPost && lastLoadedPost === post) {
       postStream.appendMore();

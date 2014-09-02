@@ -23,9 +23,7 @@ Discourse.TopicFromParamsRoute = Discourse.Route.extend({
 
     postStream.refresh(params).then(function () {
       // The post we requested might not exist. Let's find the closest post
-      var closestPost = postStream.closestPostForPostNumber(params.nearPost || 1),
-          closest = closestPost.get('post_number'),
-          progress = postStream.progressIndexOfPost(closestPost);
+      var closest = postStream.closestPostNumberFor(params.nearPost) || 1;
 
       topicController.setProperties({
         currentPost: closest,
@@ -34,7 +32,7 @@ Discourse.TopicFromParamsRoute = Discourse.Route.extend({
       });
 
       topicProgressController.setProperties({
-        progressPosition: progress,
+        progressPosition: closest,
         expanded: false
       });
       Discourse.URL.jumpToPost(closest);

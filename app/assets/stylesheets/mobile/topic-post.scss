@@ -249,7 +249,6 @@ a.star {
 
   td {
     vertical-align: top;
-    padding:1px;
   }
 
   .buttons {
@@ -411,6 +410,7 @@ iframe {
 
 #share-link {
   width: 290px;
+  margin-left: 20px;
 }
 
 #selected-posts {
@@ -480,17 +480,23 @@ blockquote > *:last-child {
   float: right;
   color: $primary;
   a {
-    margin: 0;
+  margin: 0;
   }
-  .back:before {
+    .back:before,
+    .quote-other-topic:before {
     display: inline-block;
     margin-left: 8px;
     color: $primary;
     font-family: "FontAwesome";
     position: relative;
     z-index: 20;
+    }
+    .back:before {
     content: "\f062";
-  }
+    }
+    .quote-other-topic:before {
+    content: "\f061";
+    }
 }
 
 

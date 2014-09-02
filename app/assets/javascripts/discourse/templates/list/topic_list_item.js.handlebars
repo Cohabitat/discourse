@@ -40,9 +40,13 @@
 <td class='category'>{{bound-category-link category showParent=true}}</td>
 {{/unless}}
 
-{{view 'posters-column' posters=posters}}
+<td class='posters'>
+  {{#each posters}}
+    <a href="{{user.path}}" class="{{extras}}">{{avatar this usernamePath="user.username" imageSize="small"}}</a>
+  {{/each}}
+</td>
 
-{{posts-count-column topic=model class="num" action="showTopicEntrance"}}
+{{posts-count-column topic=model class="num"}}
 <td {{bind-attr class=":num :views viewsHeat"}}>{{number views numberKey="views_long"}}</td>
 
-{{activity-column topic=model class="num"}}
+{{activity-column topic=model class="num" action="showTopicEntrance"}}

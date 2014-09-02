@@ -11,7 +11,6 @@ tags
 dump.rdb
 
 .sass-cache/*
-public/csv/*
 public/plugins/*
 public/tombstone/*
 

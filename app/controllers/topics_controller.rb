@@ -52,7 +52,7 @@ class TopicsController < ApplicationController
 
     discourse_expires_in 1.minute
 
-    redirect_to_correct_topic(@topic_view.topic, opts[:post_number]) && return if slugs_do_not_match || (!request.format.json? && params[:slug].nil?)
+    redirect_to_correct_topic(@topic_view.topic, opts[:post_number]) && return if slugs_do_not_match || (!request.xhr? && params[:slug].nil?)
 
     track_visit_to_topic
 
@@ -79,7 +79,7 @@ class TopicsController < ApplicationController
     params.permit(:min_trust_level, :min_score, :min_replies, :bypass_trust_level_score, :only_moderator_liked)
 
     opts = { best: params[:best].to_i,
-      min_trust_level: params[:min_trust_level] ? params[:min_trust_level].to_i : 1,
+      min_trust_level: params[:min_trust_level] ? 1 : params[:min_trust_level].to_i,
       min_score: params[:min_score].to_i,
       min_replies: params[:min_replies].to_i,
       bypass_trust_level_score: params[:bypass_trust_level_score].to_i, # safe cause 0 means ignore
@@ -382,7 +382,7 @@ class TopicsController < ApplicationController
 
   def redirect_to_correct_topic(topic, post_number=nil)
     url = topic.relative_url
-    url << "/#{post_number}" if post_number.to_i > 0
+    url << "/" + post_number if post_number.to_i > 0
     url << ".json" if request.format.json?
 
     redirect_to url, status: 301
@@ -404,7 +404,7 @@ class TopicsController < ApplicationController
         username: request['u'],
         ip_address: request.remote_ip
       )
-    end unless request.format.json?
+    end unless request.xhr?
 
     Scheduler::Defer.later "Track Visit" do
       TopicViewItem.add(topic_id, ip, user_id)
@@ -416,7 +416,7 @@ class TopicsController < ApplicationController
   end
 
   def should_track_visit_to_topic?
-    !!((!request.format.json? || params[:track_visit]) && current_user)
+    !!((!request.xhr? || params[:track_visit]) && current_user)
   end
 
   def perform_show_response

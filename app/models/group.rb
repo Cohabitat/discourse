@@ -34,7 +34,7 @@ class Group < ActiveRecord::Base
     :everyone => 99
   }
 
-  validates :alias_level, inclusion: { in: ALIAS_LEVELS.values}
+  validate :alias_level, inclusion: { in: ALIAS_LEVELS.values}
 
   def posts_for(guardian, before_post_id=nil)
     user_ids = group_users.map {|gu| gu.user_id}
@@ -269,23 +269,22 @@ class Group < ActiveRecord::Base
   def add(user)
     self.users.push(user)
   end
-
   protected
 
-    def name_format_validator
-      UsernameValidator.perform_validation(self, 'name')
-    end
+  def name_format_validator
+    UsernameValidator.perform_validation(self, 'name')
+  end
 
-    # hack around AR
-    def destroy_deletions
-      if @deletions
-        @deletions.each do |gu|
-          gu.destroy
-          User.where('id = ? AND primary_group_id = ?', gu.user_id, gu.group_id).update_all 'primary_group_id = NULL'
-        end
+  # hack around AR
+  def destroy_deletions
+    if @deletions
+      @deletions.each do |gu|
+        gu.destroy
+        User.where('id = ? AND primary_group_id = ?', gu.user_id, gu.group_id).update_all 'primary_group_id = NULL'
       end
-      @deletions = nil
     end
+    @deletions = nil
+  end
 
 end
 
@@ -295,8 +294,8 @@ end
 #
 #  id          :integer          not null, primary key
 #  name        :string(255)      not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  created_at  :datetime
+#  updated_at  :datetime
 #  automatic   :boolean          default(FALSE), not null
 #  user_count  :integer          default(0), not null
 #  alias_level :integer          default(0)

@@ -35,13 +35,14 @@ class CategoryFeaturedTopic < ActiveRecord::Base
     end
   end
 
-  def self.fake_admin
-    # fake an admin
-    admin = User.new
-    admin.admin = true
-    admin.id = -1
-    admin
-  end
+  private
+    def self.fake_admin
+      # fake an admin
+      admin = User.new
+      admin.admin = true
+      admin.id = -1
+      admin
+    end
 
 end
 
@@ -51,8 +52,8 @@ end
 #
 #  category_id :integer          not null
 #  topic_id    :integer          not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  created_at  :datetime
+#  updated_at  :datetime
 #  rank        :integer          default(0), not null
 #  id          :integer          not null, primary key
 #

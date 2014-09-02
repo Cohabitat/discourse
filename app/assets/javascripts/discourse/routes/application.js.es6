@@ -5,18 +5,6 @@ var ApplicationRoute = Em.Route.extend({
       this.controllerFor('topic-entrance').send('show', data);
     },
 
-    composePrivateMessage: function(user) {
-      var self = this;
-      this.transitionTo('userActivity', user).then(function () {
-        self.controllerFor('user-activity').send('composePrivateMessage');
-      });
-    },
-
-    expandUser: function(user) {
-      this.controllerFor('poster-expansion').show(user.get('username'), user.get('uploaded_avatar_id'));
-      return true;
-    },
-
     error: function(err, transition) {
       if (err.status === 404) {
         // 404
@@ -136,16 +124,7 @@ var ApplicationRoute = Em.Route.extend({
           router.controllerFor('editCategory').set('selectedTab', 'general');
         });
       }
-    },
 
-    /**
-      Deletes a user and all posts and topics created by that user.
-
-      @method deleteSpammer
-    **/
-    deleteSpammer: function (user) {
-      this.send('closeModal');
-      user.deleteAsSpammer(function() { window.location.reload(); });
     }
   },
 

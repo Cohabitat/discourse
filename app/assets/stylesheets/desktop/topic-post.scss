@@ -434,7 +434,6 @@ a.star {
 
   td {
     vertical-align: top;
-    padding:1px;
   }
 
   .buttons {
@@ -675,6 +674,8 @@ blockquote > *:last-child {
 /* quotes with attribution */
 .quote {
   &>blockquote {
+    margin-top: 0;
+    padding-top: 0;
     .onebox-result {
       background-color: scale-color-diff();
     }
@@ -683,8 +684,7 @@ blockquote > *:last-child {
   .title {
     border-left: 5px solid darken(scale-color-diff(), 10%);
     background-color: scale-color-diff();
-    padding: 12px 12px 0 12px;
-    /* blockquote is underneath this and has top margin */
+    padding: 12px;
     .avatar { margin-right: 7px; }
     img { margin-top: -4px; }
   }
@@ -706,18 +706,23 @@ blockquote > *:last-child {
   float: right;
   color: scale-color($primary, $lightness: 50%);
   a {
-    margin: 0;
+  margin: 0;
   }
-  .back:before
-  {
+    .back:before,
+    .quote-other-topic:before {
     display: inline-block;
     margin-left: 8px;
     color: scale-color($primary, $lightness: 50%);
     font-family: "FontAwesome";
     position: relative;
     z-index: 20;
+    }
+    .back:before {
     content: "\f062";
-  }
+    }
+    .quote-other-topic:before {
+    content: "\f061";
+    }
 }
 
 .gutter {
@@ -802,6 +807,12 @@ $topic-avatar-width: 45px;
   position: relative;
 }
 
+.row:before, .row:after {
+  display: table;
+  content: "";
+}
+.row:after {clear: both;}
+
 .dropdown {
   position: relative;
 }
@@ -871,6 +882,16 @@ $topic-avatar-width: 45px;
 .open > .dropdown-menu {
   display: block;
   clear: both;
+}
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+
+.fade.in {
+  opacity: 1;
 }
 
 #selected-posts {

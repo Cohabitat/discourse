@@ -16,10 +16,7 @@ module Jobs
       cp.post_process(args[:bypass_bump])
 
       # If we changed the document, save it
-      if cp.dirty?
-        post.update_column(:cooked, cp.html)
-        post.publish_change_to_clients! :revised
-      end
+      post.update_column(:cooked, cp.html) if cp.dirty?
     end
 
   end

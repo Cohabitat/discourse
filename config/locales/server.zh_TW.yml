@@ -20,7 +20,6 @@ zh_TW:
   posts: "文章"
   loading: "載入中"
   powered_by_html: 'Powered by <a href="http://www.discourse.org">Discourse</a>, 請啟用 Javascript 以獲得最佳瀏覽效果'
-  log_in: "登入"
   via: "%{username} 自 %{site_name}"
   is_reserved: "保留權利"
   errors:
@@ -69,7 +68,6 @@ zh_TW:
     one: "抱歉, 訪客每次只能貼一條連結。"
     other: "抱歉, 訪客每次只能貼 %{count} 條連結。"
   spamming_host: "抱歉，你不能張貼該網站之連結。"
-  user_is_suspended: "被停權的用戶無法張貼文章。"
   just_posted_that: "與你最近發表的內容太相似"
   has_already_been_used: "已經被使用"
   invalid_characters: "包含無效字詞"
@@ -162,7 +160,6 @@ zh_TW:
       has_subcategories: "不能刪除該分類，因為它有子分類"
       topic_exists:
         other: "不能刪除該分類，因為它有 %{count} 個話題，最老的話題是 %{topic_link}"
-      topic_exists_no_oldest: "不能刪除該分類，因為有 %{count} 個話題"
   trust_levels:
     newuser:
       title: "新用戶"
@@ -243,12 +240,10 @@ zh_TW:
     continue: "繼續連接至 %{site_name}"
   change_email:
     confirmed: "你的電子郵箱已更新。"
-    please_continue: "繼續連接至 %{site_name}"
     error: "修改你的電郵位址時發生錯誤，可能此郵箱已有人使用了。"
   activation:
     action: "啟用您的帳號"
     already_done: "抱歉，此帳號啟用連結已經失效。可能你的帳號已經啟用了。"
-    continue_button: "繼續連接至 %{site_name}"
     welcome_to: "歡迎來到%{site_name}！"
     approval_required: "你的論壇帳號需要由板主手動審核後才可使用。當你的帳號獲得批准，你將收到電子郵件通知。"
   post_action_types:
@@ -267,7 +262,6 @@ zh_TW:
       title: '通知 {{username}}'
       description: '此文章包含一些我想與該用戶私下討論的內容。'
       long_form: '已通知用戶'
-      email_title: '你的文章在"%{title}"'
       email_body: "%{link}\n\n%{message}"
     notify_moderators:
       title: '通知板主'
@@ -301,6 +295,7 @@ zh_TW:
       email_body: "%{link}\n\n%{message}"
   flagging:
     you_must_edit: '<p>你的文章已被社群投訴，請 <a href="/my/private-messages">閱讀你的私人訊息</a>。</p>'
+    user_must_edit: '<p>投訴的內容已隱藏。</p>'
   archetypes:
     regular:
       title: "一般討論話題"
@@ -552,6 +547,7 @@ zh_TW:
     allow_restore: "允許還原資料，注意此動作可能覆蓋「所有」網站資料！除非你計畫還原備份檔，否則請保持此設定為 false"
     maximum_backups: "磁碟備份的最大數量，舊的將會自動刪除"
     backup_daily: "每日自動對網站進行備份"
+    enable_s3_backups: "當備份完成時自動上傳到 S3，請確定已經填寫了 S3 的驗證資料"
     s3_backup_bucket: "遠端備份 bucket ，注意：請確定是私有的 bucket"
     active_user_rate_limit_secs: "更新“最後一次見到”資料的頻率，單位為秒"
     previous_visit_timeout_hours: "系統判斷一次瀏覽之後多少小時後為“上一次”瀏覽"
@@ -641,6 +637,7 @@ zh_TW:
     invited_to_private_message: "%{display_username} 邀請你進行私人通訊：%{link}"
     invitee_accepted: "%{display_username} 接受了你的邀請"
     linked: "%{display_username} 在 %{link} 關連了你"
+    granted_badge: "你被授與了 %{link}"
   search:
     within_post: "#%{post_number} by %{username}: %{excerpt}"
     types:
@@ -651,6 +648,9 @@ zh_TW:
   most_posts: "大部分文章"
   most_recent_poster: "當前大部分文章作者"
   frequent_poster: "頻繁發文者"
+  redirected_to_top_reasons:
+    new_user: "歡迎加入此社群！請看看我們最近熱門的討論話題。"
+    not_seen_in_a_month: "歡迎到來！有些時間沒看到你了，這是你離開後的一些熱門話題。"
   move_posts:
     new_topic_moderator_post:
       other: "移動了 %{count} 篇文章到新的標題: %{topic_link}"
@@ -810,9 +810,6 @@ zh_TW:
     unsubscribe:
       title: "取消訂閱"
       description: "不再對這些郵件感興趣？沒問題！點擊下面按鈕來立即取消訂閱："
-    posted_by: "由 %{username} 張貼於 %{post_date}"
-    user_invited_to_private_message_pm:
-      subject_template: "[%{site_name}] %{username} 邀請你進行私人對話 '%{topic_title}'"
     user_replied:
       subject_template: "[%{site_name}] %{username} 在 '%{topic_title}' 討論話題回覆了你的文章"
       text_body_template: |
@@ -922,6 +919,7 @@ zh_TW:
     spam_hosts: "此新用戶嘗試發表多篇含有指向相同網域之連結的文章。請見網站設定中的 newuser_spam_host_threshold。"
   email_log:
     no_user: "無法找到 ID 為 %{user_id} 的使用者"
+    suspended_not_pm: "用戶已被停用，且EMail不是私人訊息"
     seen_recently: "用戶最近活躍"
     post_not_found: "無法找到 ID 為 %{post_id} 的文章"
     notification_already_read: "這封通知 EMail 已被讀取"
@@ -936,5 +934,3 @@ zh_TW:
   color_schemes:
     base_theme_name: "基礎"
   guidelines: "指導"
-  guidelines_topic:
-    title: "FAQ / 使用守則"

@@ -8,9 +8,7 @@ class LeaderRequirementsSerializer < ApplicationSerializer
              :topics_viewed_all_time, :min_topics_viewed_all_time,
              :posts_read_all_time, :min_posts_read_all_time,
              :num_flagged_posts, :max_flagged_posts,
-             :num_flagged_by_users, :max_flagged_by_users,
-             :num_likes_given, :min_likes_given,
-             :num_likes_received, :min_likes_received
+             :num_flagged_by_users, :max_flagged_by_users
 
   def time_period
     LeaderRequirements::TIME_PERIOD

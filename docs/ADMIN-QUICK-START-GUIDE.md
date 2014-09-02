@@ -18,7 +18,7 @@ We'll wait.
 
 ### Customize Logos and Colors
 
-By default you get the same standard generic "penciled in" Discourse logo everyone gets. Look for the [**assets for the site design**](/t/assets-for-the-site-design/5) topic; follow the instructions there to upload your logos to that topic, and then paste the uploaded image paths into the required logo settings.
+By default you get the same standard generic "penciled in" Discourse logo everyone gets. Look for the [**assets for the forum design**](/t/assets-for-the-forum-design/5) topic; follow the instructions there to upload your logos to that topic, and then paste the uploaded image paths into the required logo settings.
 
 To quickly give your Discourse a distinctive look, without having to edit or understand CSS, create a new color scheme via [Customize, Colors](/admin/customize/colors).
 
@@ -98,22 +98,6 @@ If a pin isn't visible enough, you can also turn one single topic into a **banne
 
 To make (or remove) a pin or a banner, use the admin wrench at the top right of the topic.
 
-### Set the homepage
-
-By default your homepage is a simple list of the latest posts.
-
-We strongly recommend sticking with this homepage for small and medium communities until you start getting so many new topics that a simple list isn't workable.
-
-You can change the homepage to the Categories list by editing `top menu` in the [Basic Setup](/admin/site_settings/category/basic) site settings. Change it from the default of
-
-`latest|new|unread|starred|top|categories`
-
-to
-
-`categories|latest|new|unread|starred|top`
-
-That is, move categories from the far right to the far left -- that leftmost top menu item is your default homepage. 
-
 ### Build Your Own FAQ
 
 Right now [your FAQ](/faq) is the same Creative Commons [universal rules of civilized discourse](http://blog.discourse.org/2013/03/the-universal-rules-of-civilized-discourse/) we provide to all Discourse installs. These built-in community guidelines are referenced a bunch of places; please *do* use them and refer to them often -- they really work!
@@ -159,7 +143,7 @@ If your discussion area is be open to the public, new visitors will arrive that 
 
 Discourse is designed to offer safe defaults for public communities, even with no active moderation. 
 
-> **0 (new) &rarr; 1 (basic) &rarr; 2 (regular) &rarr; 3 (veteran) &rarr; 4 (elder)**
+> **0 (new) &rarr; 1 (basic) &rarr; 2 (regular) &rarr; 3 (leader) &rarr; 4 (elder)**
 
 All new users start out in a sandbox with restrictions for everyone's safety. **Trust level 0 (new) users _cannot_** &hellip;
 
@@ -183,7 +167,7 @@ These defaults are safe, but they may be too conservative for your site:
 
 Out of the box, Discourse defaults to [Creative Commons licensing](https://creativecommons.org/).
 
-> Your users will always retain copyright on their posts, and will always grant the site owner enough rights to include their content on the site.
+> Your users will always retain copyright on their posts, and will always grant the forum owner enough rights to include their content on the forum.
 >
 > Who is allowed to republish the content posted on this forum?
 > 

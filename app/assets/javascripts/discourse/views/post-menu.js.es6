@@ -223,7 +223,6 @@ export default Discourse.View.extend({
 
   // Share button
   buttonForShare: function(post) {
-    if (!Discourse.User.current()) return;
     var options = {
       shareUrl: post.get('shareUrl'),
       postNumber: post.get('post_number')

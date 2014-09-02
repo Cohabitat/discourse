@@ -32,10 +32,9 @@ class TopicQuery
     'likes' => 'like_count',
     'views' => 'views',
     'posts' => 'posts_count',
-    'activity' => 'bumped_at',
+    'activity' => 'created_at',
     'posters' => 'participant_count',
-    'category' => 'category_id',
-    'created' => 'created_at'
+    'category' => 'category_id'
   }
 
   def initialize(user=nil, options={})

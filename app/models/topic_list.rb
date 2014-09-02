@@ -8,8 +8,7 @@ class TopicList
                 :draft,
                 :draft_key,
                 :draft_sequence,
-                :filter,
-                :for_period
+                :filter
 
   def initialize(filter, current_user, topics)
     @filter = filter

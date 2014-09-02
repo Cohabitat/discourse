@@ -48,7 +48,7 @@ class Admin::EmailController < Admin::AdminController
 
   def delivery_settings
     action_mailer_settings
-      .reject { |k, _| k == :password }
+      .reject { |k, v| k == :password }
       .map    { |k, v| { name: k, value: v }}
   end
 

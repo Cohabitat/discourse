@@ -51,7 +51,7 @@ class PostDestroyer
 
   def staff_recovered
     @post.recover!
-    @post.publish_change_to_clients! :recovered
+    publish("recovered")
   end
 
   # When a post is properly deleted. Well, it's still soft deleted, but it will no longer
@@ -75,8 +75,21 @@ class PostDestroyer
       update_associated_category_latest_topic
       update_user_counts
     end
+    publish("deleted")
+  end
 
-    @post.publish_change_to_clients! :deleted if @post.topic
+  def publish(message)
+    # edge case, topic is already destroyed
+    return unless @post.topic
+
+    MessageBus.publish("/topic/#{@post.topic_id}",{
+                    id: @post.id,
+                    post_number: @post.post_number,
+                    updated_at: @post.updated_at,
+                    type: message
+                  },
+                  group_ids: @post.topic.secure_group_ids
+    )
   end
 
   # When a user 'deletes' their own post. We just change the text.
@@ -87,9 +100,6 @@ class PostDestroyer
       @post.update_flagged_posts_count
       @post.topic_links.each(&:destroy)
     end
-
-    # covered by PostRevisor
-    # @post.publish_change_to_clients! :revised
   end
 
   def user_recovered
@@ -99,9 +109,6 @@ class PostDestroyer
       @post.revise(@user, @post.revisions.last.modifications["raw"][0], force_new_version: true)
       @post.update_flagged_posts_count
     end
-
-    # covered by PostRevisor
-    # @post.publish_change_to_clients! :revised
   end
 
 
@@ -132,7 +139,7 @@ class PostDestroyer
     public_post_actions = PostAction.publics.where(post_id: @post.id)
     public_post_actions.each { |pa| pa.trash!(@user) }
 
-    f = PostActionType.public_types.map { |k, _| ["#{k}_count", 0] }
+    f = PostActionType.public_types.map { |k,v| ["#{k}_count", 0] }
     Post.with_deleted.where(id: @post.id).update_all(Hash[*f.flatten])
   end
 

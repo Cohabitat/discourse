@@ -236,6 +236,8 @@ sv:
       title: 'Rösta'
       description: 'Rösta för detta inlägg'
       long_form: 'röstade för detta inlägg'
+  flagging:
+    user_must_edit: '<p>Flaggat innehåll dolt.</p>'
   archetypes:
     regular:
       title: "Vanlig Tråd"

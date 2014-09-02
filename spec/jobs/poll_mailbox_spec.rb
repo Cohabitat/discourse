@@ -7,18 +7,18 @@ describe Jobs::PollMailbox do
 
   describe ".execute" do
 
-    it "does no polling if pop3_polling_enabled is false" do
-      SiteSetting.expects(:pop3_polling_enabled?).returns(false)
-      poller.expects(:poll_pop3).never
+    it "does no polling if pop3s_polling_enabled is false" do
+      SiteSetting.expects(:pop3s_polling_enabled?).returns(false)
+      poller.expects(:poll_pop3s).never
 
       poller.execute({})
     end
 
-    describe "with pop3_polling_enabled" do
+    describe "with pop3s_polling_enabled" do
 
-      it "calls poll_pop3" do
-        SiteSetting.expects(:pop3_polling_enabled?).returns(true)
-        poller.expects(:poll_pop3).once
+      it "calls poll_pop3s" do
+        SiteSetting.expects(:pop3s_polling_enabled?).returns(true)
+        poller.expects(:poll_pop3s).once
 
         poller.execute({})
       end
@@ -26,34 +26,19 @@ describe Jobs::PollMailbox do
 
   end
 
-  describe ".poll_pop3" do
+  describe ".poll_pop3s" do
 
     it "logs an error on pop authentication error" do
       error = Net::POPAuthenticationError.new
       data = { limit_once_per: 1.hour, message_params: { error: error }}
 
-      Net::POP3.any_instance.expects(:start).raises(error)
+      Net::POP3.expects(:start).raises(error)
 
       Discourse.expects(:handle_exception)
 
-      poller.poll_pop3
+      poller.poll_pop3s
     end
 
-    it "calls enable_ssl when the setting is enabled" do
-      SiteSetting.pop3_polling_ssl = true
-      Net::POP3.any_instance.stubs(:start)
-      Net::POP3.any_instance.expects(:enable_ssl)
-
-      poller.poll_pop3
-    end
-
-    it "does not call enable_ssl when the setting is off" do
-      SiteSetting.pop3_polling_ssl = false
-      Net::POP3.any_instance.stubs(:start)
-      Net::POP3.any_instance.expects(:enable_ssl).never
-
-      poller.poll_pop3
-    end
   end
 
   # Testing mock for the email objects that you get
@@ -182,21 +167,8 @@ describe Jobs::PollMailbox do
         email.should be_deleted
       end
 
-      it "works with multiple To addresses" do
-        email = MockPop3EmailObject.new fixture_file('emails/multiple_destinations.eml')
-        expect_success
-
-        poller.handle_mail(email)
-
-        new_post = Post.find_by(topic: topic, post_number: 2)
-        assert new_post.present?
-        assert_equal expected_post.strip, new_post.cooked.strip
-
-        email.should be_deleted
-      end
-
       describe "with the wrong reply key" do
-        let(:email) { MockPop3EmailObject.new fixture_file('emails/wrong_reply_key.eml') }
+        let(:email) { MockPop3EmailObject.new fixture_file('emails/wrong_reply_key.eml')}
 
         it "raises an EmailLogNotFound error" do
           expect_exception Email::Receiver::EmailLogNotFound
@@ -217,9 +189,9 @@ describe Jobs::PollMailbox do
         email.should be_deleted
       end
 
-      it "a no content reply raises an EmptyEmailError" do
+      it "a no content reply raises an EmailUnparsableError" do
         email = MockPop3EmailObject.new fixture_file('emails/no_content_reply.eml')
-        expect_exception Email::Receiver::EmptyEmailError
+        expect_exception Email::Receiver::EmailUnparsableError
 
         poller.handle_mail(email)
         email.should be_deleted

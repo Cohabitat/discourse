@@ -30,6 +30,15 @@ test("basic cooking", function() {
   cooked("brussel sproutes are *awful*.", "<p>brussel sproutes are <em>awful</em>.</p>", "it doesn't swallow periods.");
 });
 
+test("Auto quoting", function() {
+  cooked('"My fake plants died because I did not pretend to water them."',
+         "<p><blockquote>My fake plants died because I did not pretend to water them.</blockquote></p>",
+         "it converts single line quotes to blockquotes");
+  cooked('"hello\nworld"', "<p>\"hello<br/>world\"</p>", "It doesn't convert multi line quotes");
+  cooked('"hello "evil" trout"', '<p>"hello "evil" trout"</p>', "it doesn't format quotes in the middle of a line");
+  cooked('["text"', '<p>["text"</p>', "it recognizes leading tag-like text");
+});
+
 test("Traditional Line Breaks", function() {
   var input = "1\n2\n3";
   cooked(input, "<p>1<br/>2<br/>3</p>", "automatically handles trivial newlines");
@@ -138,10 +147,6 @@ test("Links", function() {
   cooked("[http://google.com ... wat](http://discourse.org)",
          "<p><a href=\"http://discourse.org\">http://google.com ... wat</a></p>",
          "it supports linkins within links");
-
-  cooked("[Link](http://www.example.com) (with an outer \"description\")",
-         "<p><a href=\"http://www.example.com\">Link</a> (with an outer \"description\")</p>",
-         "it doesn't consume closing parens as part of the url")
 });
 
 test("simple quotes", function() {
@@ -360,21 +365,13 @@ test("Code Blocks", function() {
           "<p><pre><code class=\"lang-auto\">hello</code></pre></p>",
           "it doesn't not whitelist all classes");
 
-  cooked("```\n[quote=\"sam, post:1, topic:9441, full:true\"]This is `<not>` a bug.[/quote]\n```",
+  cooked("```[quote=\"sam, post:1, topic:9441, full:true\"]This is `<not>` a bug.[/quote]```",
          "<p><pre><code class=\"lang-auto\">[quote=&quot;sam, post:1, topic:9441, full:true&quot;]This is &#x60;&lt;not&gt;&#x60; a bug.[/quote]</code></pre></p>",
          "it allows code with backticks in it");
 
   cooked("    hello\n<blockquote>test</blockquote>",
          "<pre><code>hello</code></pre>\n\n<blockquote>test</blockquote>",
          "it allows an indented code block to by followed by a `<blockquote>`");
-
-  cooked("``` foo bar ```",
-         "<p><code>foo bar</code></p>",
-         "it tolerates misuse of code block tags as inline code");
-
-  cooked("```\nline1\n```\n```\nline2\n\nline3\n```",
-         "<p><pre><code class=\"lang-auto\">line1</code></pre></p>\n\n<p><pre><code class=\"lang-auto\">line2\n\nline3</code></pre></p>",
-         "it does not consume next block's trailing newlines");
 });
 
 test("sanitize", function() {

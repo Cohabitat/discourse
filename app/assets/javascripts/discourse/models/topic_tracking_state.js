@@ -58,20 +58,18 @@ Discourse.TopicTrackingState = Discourse.Model.extend({
   notify: function(data){
     if (!this.newIncoming) { return; }
 
-    var filter = this.get("filter");
-
-    if ((filter === "all" || filter === "latest" || filter === "new") && data.message_type === "new_topic" ) {
+    if ((this.filter === "all" ||this.filter === "latest" || this.filter === "new") && data.message_type === "new_topic" ) {
       this.addIncoming(data.topic_id);
     }
 
-    if ((filter === "all" || filter === "unread") && data.message_type === "unread") {
+    if ((this.filter === "all" || this.filter === "unread") && data.message_type === "unread") {
       var old = this.states["t" + data.topic_id];
       if(!old || old.highest_post_number === old.last_read_post_number) {
         this.addIncoming(data.topic_id);
       }
     }
 
-    if(filter === "latest" && data.message_type === "latest") {
+    if(this.filter === "latest" && data.message_type === "latest") {
       this.addIncoming(data.topic_id);
     }
 
@@ -92,7 +90,7 @@ Discourse.TopicTrackingState = Discourse.Model.extend({
   // track how many new topics came for this filter
   trackIncoming: function(filter) {
     this.newIncoming = [];
-    this.set("filter", filter);
+    this.filter = filter;
     this.set("incomingCount", 0);
   },
 
@@ -122,9 +120,6 @@ Discourse.TopicTrackingState = Discourse.Model.extend({
               unread = postsCount - state.last_read_post_number;
 
           if (newPosts < 0) { newPosts = 0; }
-          if (!state.last_read_post_number) {
-            unread = 0;
-          }
           if (unread < 0) { unread = 0; }
 
           t.setProperties({
@@ -132,7 +127,7 @@ Discourse.TopicTrackingState = Discourse.Model.extend({
             last_read_post_number: state.last_read_post_number,
             new_posts: newPosts,
             unread: unread,
-            unseen: !state.last_read_post_number
+            unseen: false
           });
         }
       }
@@ -162,8 +157,6 @@ Discourse.TopicTrackingState = Discourse.Model.extend({
     list.topics.forEach(function(topic){
       var row = tracker.states["t" + topic.id] || {};
       row.topic_id = topic.id;
-      row.notification_level = topic.notification_level;
-
 
       if (topic.unseen) {
         row.last_read_post_number = null;

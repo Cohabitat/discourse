@@ -11,7 +11,7 @@ class PostAnalyzer
   def cook(*args)
     cooked = PrettyText.cook(*args)
 
-    result = Oneboxer.apply(cooked) do |url, _|
+    result = Oneboxer.apply(cooked) do |url, elem|
       Oneboxer.invalidate(url) if args.last[:invalidate_oneboxes]
       Oneboxer.cached_onebox url
     end

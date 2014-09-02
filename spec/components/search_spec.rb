@@ -110,8 +110,17 @@ describe Search do
 
     it 'returns a result' do
       result.should be_present
+    end
+
+    it 'has the display name as the title' do
       result[:title].should == user.username
+    end
+
+    it 'has the avatar_template is there so it can hand it to the client' do
       result[:avatar_template].should_not be_nil
+    end
+
+    it 'has a url for the record' do
       result[:url].should == "/users/#{user.username_lower}"
     end
 
@@ -186,23 +195,12 @@ describe Search do
       it 'returns the post' do
         result.should be_present
         result[:title].should == topic.title
-
-        result[:url].should == topic.relative_url + "/2"
-      end
-    end
-
-    context "search for a topic by id" do
-      let(:result) { first_of_type(Search.new(topic.id, type_filter: 'topic', search_for_id: true, min_search_term_length: 1).execute, 'topic') }
-
-      it 'returns the topic' do
-        result.should be_present
-        result[:title].should == topic.title
-        result[:url].should == topic.relative_url
+        result[:url].should == reply.url
       end
     end
 
     context "search for a topic by url" do
-      let(:result) { first_of_type(Search.new(topic.relative_url, search_for_id: true, type_filter: 'topic').execute, 'topic') }
+      let(:result) { first_of_type(Search.new(topic.relative_url, type_filter: 'topic').execute, 'topic') }
 
       it 'returns the topic' do
         result.should be_present

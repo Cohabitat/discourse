@@ -4,10 +4,8 @@ module Export
 
     attr_reader :success
 
-    def initialize(user_id, opts={})
-      @user_id = user_id
-      @publish_to_message_bus = opts[:publish_to_message_bus] || false
-      @with_uploads = opts[:with_uploads].nil? ? true : opts[:with_uploads]
+    def initialize(user_id, publish_to_message_bus = false)
+      @user_id, @publish_to_message_bus = user_id, publish_to_message_bus
 
       ensure_no_operation_is_running
       ensure_we_have_a_user
@@ -123,7 +121,7 @@ module Export
     end
 
     def sidekiq_has_running_jobs?
-      Sidekiq::Workers.new.each do |_, _, worker|
+      Sidekiq::Workers.new.each do |process_id, thread_id, worker|
         payload = worker.try(:payload)
         return true if payload.try(:all_sites)
         return true if payload.try(:current_site_id) == @current_db
@@ -248,13 +246,11 @@ module Export
         `tar --append --dereference --file #{tar_filename} #{File.basename(@dump_filename)}`
       end
 
-      if @with_uploads
-        upload_directory = "uploads/" + @current_db
+      upload_directory = "uploads/" + @current_db
 
-        log "Archiving uploads..."
-        FileUtils.cd(File.join(Rails.root, "public")) do
-          `tar --append --dereference --file #{tar_filename} #{upload_directory}`
-        end
+      log "Archiving uploads..."
+      FileUtils.cd(File.join(Rails.root, "public")) do
+        `tar --append --dereference --file #{tar_filename} #{upload_directory}`
       end
 
       log "Gzipping archive..."

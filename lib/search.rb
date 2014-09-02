@@ -111,8 +111,7 @@ class Search
     return nil if @term.blank? || @term.length < (@opts[:min_search_term_length] || SiteSetting.min_search_term_length)
 
     # If the term is a number or url to a topic, just include that topic
-    if @opts[:search_for_id] && @results.type_filter == 'topic'
-      return single_topic(@term.to_i).as_json if @term =~ /^\d+$/
+    if @results.type_filter == 'topic'
       begin
         route = Rails.application.routes.recognize_path(@term)
         return single_topic(route[:topic_id]).as_json if route[:topic_id].present?
@@ -207,8 +206,7 @@ class Search
       end
     end
 
-    def posts_query(limit, opts=nil)
-      opts ||= {}
+    def posts_query(limit)
       posts = Post.includes(:post_search_data, {:topic => :category})
                   .where("topics.deleted_at" => nil)
                   .where("topics.visible")
@@ -236,14 +234,8 @@ class Search
       end
 
       posts = posts.order("TS_RANK_CD(TO_TSVECTOR(#{query_locale}, topics.title), #{ts_query}) DESC")
-
-      data_ranking = "TS_RANK_CD(post_search_data.search_data, #{ts_query})"
-      if opts[:aggregate_search]
-        posts = posts.order("SUM(#{data_ranking}) DESC")
-      else
-        posts = posts.order("#{data_ranking} DESC")
-      end
-      posts = posts.order("topics.bumped_at DESC")
+                   .order("TS_RANK_CD(post_search_data.search_data, #{ts_query}) DESC")
+                   .order("topics.bumped_at DESC")
 
       if secure_category_ids.present?
         posts = posts.where("(categories.id IS NULL) OR (NOT categories.read_restricted) OR (categories.id IN (?))", secure_category_ids).references(:categories)
@@ -278,21 +270,6 @@ class Search
       end
     end
 
-    def aggregate_search
-      cols = ['topics.id', 'topics.title', 'topics.slug']
-      topics = posts_query(@limit, aggregate_search: true)
-                .group(*cols)
-                .pluck('min(posts.post_number)',*cols)
-
-      topics.each do |t|
-        @results.add_result(SearchResult.new(type: :topic,
-                                             topic_id: t[1],
-                                             id: t[1],
-                                             title: t[2],
-                                             url: "/t/#{t[3]}/#{t[1]}/#{t[0]}"))
-      end
-    end
-
     def topic_search
 
       posts = if @search_context.is_a?(User)
@@ -300,12 +277,10 @@ class Search
                 posts_query(@limit * Search.burst_factor)
               elsif @search_context.is_a?(Topic)
                 posts_query(@limit).where('posts.post_number = 1 OR posts.topic_id = ?', @search_context.id)
-              elsif @include_blurbs
-                posts_query(@limit).where('posts.post_number = 1')
+              else
+                posts_query(@limit).where(post_number: 1)
               end
 
-      # If no context, do an aggregate search
-      return aggregate_search if posts.nil?
 
       posts.each do |p|
         @results.add_result(SearchResult.from_post(p, @search_context, @term, @include_blurbs))

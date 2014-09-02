@@ -23,7 +23,6 @@ Discourse.Search = {
     // Only include the data we have
     var data = { term: term };
     if (opts.typeFilter) data.type_filter = opts.typeFilter;
-    if (opts.searchForId) data.search_for_id = true;
 
     if (opts.searchContext) {
       data.search_context = {

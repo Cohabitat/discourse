@@ -247,6 +247,7 @@ he:
     user:
       said: "{{username}} אמר:"
       profile: "פרופיל"
+      show_profile: "בקר בפרופיל"
       mute: "השתק"
       edit: "ערוך העדפות"
       download_archive: "הורד ארכיון של ההודעות שלי"
@@ -325,16 +326,19 @@ he:
         title: "שינוי רקע פרופיל"
       email:
         title: "דואר אלקטרוני"
+        instructions: "כתובת הדואר האלקטרוני שלך לעולם לא תוצג לציבור."
         ok: "נראה טוב, נשלח לך דואר אלקטרוני לאישור."
         invalid: "בבקשה הכנס כתובת דואר אלקטרוני חוקית"
         authenticated: "כתובת הדואר האלקטרוני שלך אושרה על ידי {{provider}}."
         frequency: "נשלח לך דואר אלקטרוני רק אם לא ראינו אותך לאחרונה ועדיין לא ראית את מה שאנחנו רוצים לשלוח"
       name:
         title: "שם"
+        instructions: "הגרסא הארוכה של שמכם"
         too_short: "השם שלך קצר מידי."
         ok: "השם נראה טוב."
       username:
         title: "שם משתמש"
+        instructions: "שם המשתמש שלכם חייב להיות ייחודי, ללא רווחים וקצר."
         short_instructions: "אנשים יכולים לאזכר אותך כ @{{username}}."
         available: "שם המשתמש שלך פנוי."
         global_match: "הדואר האלקטרוני תואם את שם המשתמש הרשום"
@@ -439,10 +443,12 @@ he:
       prev_page: "בזמן הניסיון לטעון"
       reasons:
         network: "שגיאת רשת"
+        server: "תקלת שרת: {{code}}"
         unknown: "תקלה"
       desc:
         network: "אנא בדקו את ההתקשרות שלכם"
         network_fixed: "נראה שזה חזר לעבוד."
+        server: "משהו השתבש."
         unknown: "משהו השתבש."
       buttons:
         back: "חזרה"
@@ -566,6 +572,7 @@ he:
       view_new_post: "הצגת את ההודעה החדשה שלך."
       saving: "שומר..."
       saved: "נשמר!"
+      saved_draft: "יש לך טיוטאת פרסום בתהליך. הקישו איפהשהו בבר זה כדי להמשיך לערוך."
       uploading: "מעלה..."
       show_preview: 'הראה תצוגה מקדימה &raquo;'
       hide_preview: '&laquo; הסתר תצוגה מקדימה'
@@ -615,6 +622,7 @@ he:
       invitee_accepted: "<i title='accepted your invitation' class='fa fa-user'></i><p><span>{{username}}</span> אישר/ה את הזמנתך</p>"
       moved_post: "<i title='moved post' class='fa fa-sign-out'></i><p><span>{{username}}</span> הזיז/ה {{description}}</p>"
       linked: "<i title='linked post' class='fa fa-arrow-left'></i><p><span>{{username}}</span> {{description}}</p>"
+      granted_badge: "<i title='badge granted' class='fa fa-certificate'></i><p>הוענק/ו לך {{description}}</p>"
     upload_selector:
       title: "הוספת תמונה"
       title_with_attachments: "הוספת תמונה או קובץ"
@@ -731,6 +739,7 @@ he:
       browse_all_categories: עיין בכל הקטגוריות
       view_latest_topics: הצגת נושאים מדוברים
       suggest_create_topic: מדוע לא ליצור נושא?
+      read_position_reset: "מיקום הקריאה שלך אופס."
       jump_reply_up: קפיצה לתגובה קודמת
       jump_reply_down: קפיצה לתגובה מאוחרת
       deleted: "הנושא הזה נמחק"
@@ -919,6 +928,8 @@ he:
         confirm: "האם אתה רוצה לנטוש את ההודעה שלך?"
         no_value: "לא, שמור אותה"
         yes_value: "כן, נטוש"
+      wiki:
+        about: "פרסום זה הינו ויקי; כל אחד/אחת יכולים לערוך אותו"
       archetypes:
         save: 'שמור אפשרויות'
       controls:
@@ -1072,6 +1083,7 @@ he:
       save: 'שמור קטגוריה'
       creation_error: ארעה שגיאה במהלך יצירת הקטגוריה הזו.
       save_error: ארעה שגיאה בשמירת הקטגוריה הזו
+      more_posts: "צפה בכל {{posts}}..."
       name: "שם הקטגוריה"
       description: "תיאור"
       topic: "נושא הקטגוריה"
@@ -1226,6 +1238,7 @@ he:
         help: "נושאים מדוברים בקטגוריה {{categoryName}}"
       top:
         title: "מובילים"
+        help: "אוסף הנושאים הטובים ביותר בשנה, חודש שבוע או יום האחרונים"
         yearly:
           title: "מובילים שנתי"
         monthly:
@@ -1314,6 +1327,7 @@ he:
         disagree_flag_title: "התעלמות מהסימון היות שאינו תקין או אינו נכון"
         clear_topic_flags: "סיום"
         clear_topic_flags_title: "הנושא נבדק והבעיה נפתרה. לחצו על סיום כדי להסיר את הסימונים."
+        more: "(עוד...)"
         dispositions:
           agreed: "התקבל"
           disagreed: "לא התקבל"
@@ -1405,6 +1419,7 @@ he:
           backup:
             text: "גיבוי"
             title: "צור גיבוי"
+            confirm: "אתה בטוח שברצונך ליצור גיבוי חדש?"
           download:
             text: "הורד"
             title: "הורד את הגיבוי"
@@ -1665,6 +1680,7 @@ he:
         reputation: מוניטין
         permissions: הרשאות
         activity: פעילות
+        like_count: לייקים שהתקבלו
         private_topics_count: נושאים פרטיים
         posts_read_count: הודעות שנקראו
         post_count: הודעות שנוצרו
