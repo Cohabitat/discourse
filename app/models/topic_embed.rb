@@ -81,7 +81,7 @@ class TopicEmbed < ActiveRecord::Base
     doc.search(tags.keys.join(',')).each do |node|
       url_param = tags[node.name]
       src = node[url_param]
-      unless (src.empty?)
+      unless (src.nil? or src.empty?)
         begin
           uri = URI.parse(src)
           unless uri.host
